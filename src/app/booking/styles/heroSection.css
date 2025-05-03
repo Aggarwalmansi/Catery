@@ -1,0 +1,81 @@
+/* heroSection.css */
+
+/* Hero Section Styles */
+.hero-section {
+    background: linear-gradient(to bottom, #fff9e5, white, white);
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+  }
+  
+  .hero-section .container {
+    max-width: 7xl;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .hero-section .text-section {
+    width: 100%;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+  
+  .hero-section .text-section .title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #f97316; /* Orange-500 */
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-section .text-section .highlighted-text {
+    color: #16a34a; /* Green-600 */
+  }
+  
+  .hero-section .text-section .description {
+    font-size: 1.125rem;
+    color: #4a5568; /* Gray-700 */
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-section .text-section .cta-button {
+    background: linear-gradient(to right, #fb923c, #facc15); /* Orange-400 to Yellow-400 */
+    color: white;
+    font-weight: 600;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+  }
+  
+  .hero-section .text-section .cta-button:hover {
+    background: linear-gradient(to right, #fb923c, #fbbf24); /* Orange-500 to Yellow-500 */
+  }
+  
+  .hero-section .image-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .hero-section .image-section .image-container {
+    position: relative;
+    width: 500px;
+    height: 600px;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hero-section .image-section .image-container img {
+    border-radius: 1.5rem;
+    object-fit: cover;
+  }
+  
