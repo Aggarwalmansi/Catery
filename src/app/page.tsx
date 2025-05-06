@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import FeaturedServices from './components/FeaturesServices';
 import WhyOccasionOS from './components/Whyoccasionos';
 import Testimonials from './components/Testimonial';
-import Footer from './components/Footer';
+
 // import MenuAutoSuggest from './components/occasion/MenuAutoSuggest';
 // import OccasionSelector from './components/occasion/OccasionSelector';
 export default function Home() {
@@ -14,9 +14,9 @@ export default function Home() {
       <FeaturedServices/>
       <WhyOccasionOS/>
       <Testimonials/>
-      <Footer/>
+    
 
-      <section className="pt-24">
+      <section className="pt-0">
         {/* Hero will come here next */}
       </section>
       {/* <OccasionSelector/>

@@ -5,6 +5,7 @@ import '../styles/occasion.css';
 import CustomizationOptions from '@/app/components/occasion/CustomizationOptions';
 import ProceedToBookingButton from '@/app/components/occasion/ProceedToBookingButton';
 import Footer from '@/app/components/occasion/Footer';
+
 const occasionOptions = [
   'Wedding',
   'Birthday',
@@ -29,27 +30,30 @@ export default function OccasionPage() {
 
   return (
     <div className="occasion-wrapper">
-      <h1 className="occasion-heading">Select Your Occasion</h1>
+      <div className="occasion-content">
+        <h1 className="occasion-heading">Let’s Plan Your Occasion</h1>
+        <p className="occasion-subtext">Choose what you're celebrating today 🎉</p>
 
-      <div className="occasion-grid">
-        {occasionOptions.map((occasion) => (
-          <button
-            key={occasion}
-            onClick={() => setSelected(occasion)}
-            className={`occasion-option ${selected === occasion ? 'active' : ''}`}
-          >
-            {occasion}
-          </button>
-        ))}
+        <div className="occasion-grid">
+          {occasionOptions.map((occasion) => (
+            <button
+              key={occasion}
+              onClick={() => setSelected(occasion)}
+              className={`occasion-option ${selected === occasion ? 'active' : ''}`}
+            >
+              {occasion}
+            </button>
+          ))}
+        </div>
+
         <CustomizationOptions />
-        <ProceedToBookingButton />
-        <Footer />
 
+        <button onClick={handleNext} className="occasion-next-button">
+          Proceed ➜
+        </button>
       </div>
 
-      <button onClick={handleNext} className="occasion-next-button">
-        Next ➜
-      </button>
+      <Footer />
     </div>
   );
 }
