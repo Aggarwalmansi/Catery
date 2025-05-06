@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+   "baseUrl": "src",
+   "paths": {
+      "@/*": ["*"]               // This enables @/components/... etc.
+    },
     "target": "ES2017",
     "lib": [
       "dom",
@@ -22,6 +26,7 @@
         "name": "next"
       }
     ]
+    
   },
   "include": [
     "next-env.d.ts",

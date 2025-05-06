@@ -1,0 +1,40 @@
+/* customization.css */
+
+.customizationContainer {
+    background-color: #f0f4f8;
+    padding: 2rem;
+    margin: 2rem auto;
+    border-radius: 12px;
+    max-width: 800px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .customizationContainer h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .options label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .options select {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  

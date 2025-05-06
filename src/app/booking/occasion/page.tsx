@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import '../styles/occasion.css';
-
+import CustomizationOptions from '@/app/components/occasion/CustomizationOptions';
+import ProceedToBookingButton from '@/app/components/occasion/ProceedToBookingButton';
+import Footer from '@/app/components/occasion/Footer';
 const occasionOptions = [
   'Wedding',
   'Birthday',
@@ -39,6 +41,10 @@ export default function OccasionPage() {
             {occasion}
           </button>
         ))}
+        <CustomizationOptions />
+        <ProceedToBookingButton />
+        <Footer />
+
       </div>
 
       <button onClick={handleNext} className="occasion-next-button">
