@@ -14,6 +14,7 @@ type Caterer = {
   imageUrl: string;
 };
 
+
 const mockCaterers: Caterer[] = [
   {
     id: 1,
