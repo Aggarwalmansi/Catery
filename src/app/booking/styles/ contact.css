@@ -1,0 +1,103 @@
+/* src/app/contact/contact.css */
+
+.contact-container {
+    padding: 3rem;
+    max-width: 800px;
+    margin: auto;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    animation: hueShift 30s infinite alternate;
+  }
+  
+  .contact-heading {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ff6600;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px #ffd700;
+    background: conic-gradient(from 180deg, #f90, #ff0, #f90);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rotateText 5s linear infinite;
+  }
+  
+  .contact-info {
+    background-color: #fffef7;
+    border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    animation: tilt 8s infinite ease-in-out;
+  }
+  
+  .contact-form-box {
+    background-color: #fffdf6;
+    padding: 2rem;
+    border-radius: 30px;
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+    transition: all 0.3s ease;
+    backdrop-filter: hue-rotate(5deg);
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #f8f8f8;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Arial Rounded MT', sans-serif;
+  }
+  
+  input:focus, textarea:focus {
+    background: #fffaf0;
+    outline: 2px dashed #ffa500;
+    animation: flashFocus 1s ease-in-out;
+  }
+  
+  .fancy-button {
+    margin-top: 1rem;
+    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    animation: bounceGlow 2s infinite;
+  }
+  
+  .fancy-button:hover {
+    transform: scale(1.05) rotate(1deg);
+  }
+  
+  /* 💡 Rare/underused animations */
+  @keyframes hueShift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+  
+  @keyframes flashFocus {
+    0%, 100% { box-shadow: 0 0 0px #ffa500; }
+    50% { box-shadow: 0 0 15px #ffa500; }
+  }
+  
+  @keyframes rotateText {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes bounceGlow {
+    0%, 100% { box-shadow: 0 0 10px #fda085; transform: translateY(0); }
+    50% { box-shadow: 0 0 25px #f6d365; transform: translateY(-4px); }
+  }
+  
+  @keyframes tilt {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(0.5deg); }
+    100% { transform: rotate(0deg); }
+  }
+  

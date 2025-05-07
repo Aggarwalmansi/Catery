@@ -23,7 +23,7 @@ const mockCaterers: Caterer[] = [
     vegOnly: true,
     pricePerPlate: 250,
     rating: 4.5,
-    imageUrl: '/caterer1.jpg',
+    imageUrl: "/caterer3.jpg",
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const mockCaterers: Caterer[] = [
     vegOnly: false,
     pricePerPlate: 450,
     rating: 4.2,
-    imageUrl: '/caterer2.jpg',
+    imageUrl:'/southcaterer.jpg',
   },
   {
     id: 3,
@@ -41,7 +41,7 @@ const mockCaterers: Caterer[] = [
     vegOnly: true,
     pricePerPlate: 200,
     rating: 4.8,
-    imageUrl: '/caterer3.jpg',
+    imageUrl: '/caterer1.jpg',
   },
 ];
 
