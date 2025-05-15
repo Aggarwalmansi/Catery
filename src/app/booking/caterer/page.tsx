@@ -1,58 +1,39 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { fetchCaterers } from '@/app/utils/catererFetch'; // Adjust the import path as necessary
+import CatererCard from '@/app/components/CatererCard';
 
-type Caterer = {
-  id: number;
+interface Caterer {
+  id: string;
   name: string;
   cuisine: string[];
   vegOnly: boolean;
   pricePerPlate: number;
   rating: number;
-  imageUrl: string;
-};
-
-
-const mockCaterers: Caterer[] = [
-  {
-    id: 1,
-    name: 'Shree Ram Caterers',
-    cuisine: ['North Indian', 'Jain'],
-    vegOnly: true,
-    pricePerPlate: 250,
-    rating: 4.5,
-    imageUrl: "/caterer3.jpg",
-  },
-  {
-    id: 2,
-    name: 'Royal Feast',
-    cuisine: ['South Indian', 'Chinese'],
-    vegOnly: false,
-    pricePerPlate: 450,
-    rating: 4.2,
-    imageUrl:'/southcaterer.jpg',
-  },
-  {
-    id: 3,
-    name: 'Annapurna Rasoi',
-    cuisine: ['Gujarati'],
-    vegOnly: true,
-    pricePerPlate: 200,
-    rating: 4.8,
-    imageUrl: '/caterer1.jpg',
-  },
-];
+  image: string;
+  location: string;
+  reviewCount: number;
+}
 
 export default function CatererPage() {
   const searchParams = useSearchParams();
   const occasion = searchParams.get('occasion') || 'Wedding';
 
+  const [caterers, setCaterers] = useState<Caterer[]>([]);
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(null);
   const [vegOnly, setVegOnly] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const filteredCaterers = mockCaterers.filter((c) => {
+  useEffect(() => {
+    fetchCaterers().then((data) => {
+      setCaterers(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const filteredCaterers = caterers.filter((c) => {
     return (
       (!selectedCuisine || c.cuisine.includes(selectedCuisine)) &&
       (!vegOnly || c.vegOnly)
@@ -74,9 +55,7 @@ export default function CatererPage() {
             <label className="block font-medium text-gray-700 mb-2">Cuisine</label>
             <select
               className="w-full border border-yellow-300 px-4 py-2 rounded-lg bg-white shadow-sm"
-              onChange={(e) =>
-                setSelectedCuisine(e.target.value || null)
-              }
+              onChange={(e) => setSelectedCuisine(e.target.value || null)}
             >
               <option value="">All</option>
               <option value="North Indian">North Indian</option>
@@ -100,35 +79,15 @@ export default function CatererPage() {
 
         {/* Caterer Cards */}
         <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-          {filteredCaterers.map((caterer) => (
-            <div
-              key={caterer.id}
-              className="bg-white rounded-2xl border border-yellow-200 shadow-md hover:shadow-lg transition overflow-hidden"
-            >
-              <Image
-                width={500}
-                height={300}
-                src={caterer.imageUrl}
-                alt={caterer.name}
-                className="w-full h-52 object-cover"
-              />
-              <div className="p-5">
-                <h3 className="text-2xl font-semibold text-gray-900">{caterer.name}</h3>
-                <p className="text-sm text-gray-600 mb-1">
-                  Cuisines: {caterer.cuisine.join(', ')}
-                </p>
-                <p className="text-sm text-gray-700">💰 ₹{caterer.pricePerPlate}/plate</p>
-                <p className="text-sm text-yellow-600 font-medium mb-4">⭐ {caterer.rating}</p>
-
-                <button
-                  className="bg-gradient-to-r from-orange-400 to-yellow-300 text-white font-semibold px-5 py-2 rounded-xl hover:scale-105 transform transition shadow-md hover:shadow-lg"
-                  onClick={() => alert('View profile coming soon!')}
-                >
-                  View Profile
-                </button>
-              </div>
-            </div>
-          ))}
+          {loading ? (
+            <p>Loading caterers...</p>
+          ) : filteredCaterers.length === 0 ? (
+            <p>No caterers match your filters.</p>
+          ) : (
+            filteredCaterers.map((caterer) => (
+              <CatererCard key={caterer.id} caterer={caterer} />
+            ))
+          )}
         </div>
       </div>
     </div>
