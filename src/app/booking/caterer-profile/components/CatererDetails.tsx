@@ -3,7 +3,7 @@ type Props = {
     catererId: string;
   };
   
-  const CatererDetails = ({ catererId }: Props) => {
+  const CatererDetails = ({catererId }: Props) => {
     return (
       <div>
         <h2>Shree Ram Caterers</h2>

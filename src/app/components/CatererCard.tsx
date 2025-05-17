@@ -1,3 +1,4 @@
+import Link from "next/link";
 interface Caterer {
   id: string | number;
   name: string;
@@ -31,9 +32,9 @@ export default function CatererCard({ caterer }: Props) {
           {Array.isArray(caterer.specialties) ? caterer.specialties.join(", ") : "No cuisines listed"}
         </p>
         <p className="text-sm mt-1 font-semibold">₹{caterer.starting_price}/plate</p>
-        <button className="mt-2 w-full bg-orange-500 text-white py-1 rounded hover:bg-orange-600 transition">
-          View Profile
-        </button>
+        <Link href={`/booking/caterer/${caterer.id}`}>
+  <button className="view-profile-btn">View Profile</button>
+</Link>
       </div>
     </div>
   );

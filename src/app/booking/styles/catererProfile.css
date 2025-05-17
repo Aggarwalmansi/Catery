@@ -1,0 +1,50 @@
+.caterer-profile {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background: #fffdf7;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .caterer-photo {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+  
+  .booking-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #fff8ee;
+    border-radius: 12px;
+  }
+  
+  .booking-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .booking-section input {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .booking-section button {
+    padding: 0.8rem;
+    background: orange;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .booking-section button:hover {
+    background: #ff7700;
+  }
+  

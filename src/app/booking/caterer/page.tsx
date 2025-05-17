@@ -1,25 +1,24 @@
 'use client';
-
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { fetchCaterers } from '@/app/utils/catererFetch'; // Adjust the import path as necessary
+import { fetchCaterers } from '@/app/utils/catererFetch';
 import CatererCard from '@/app/components/CatererCard';
+import { useOccasion } from '@/app/context /OccasionContext';// ✅ fixed the space issue
 
 interface Caterer {
   id: string;
   name: string;
-  cuisine: string[];
+  specialties: string[]; // e.g. ['Wedding', 'Birthday']
   vegOnly: boolean;
-  pricePerPlate: number;
+  starting_price: number;
   rating: number;
-  image: string;
+  Photo: string;
   location: string;
   reviewCount: number;
 }
 
 export default function CatererPage() {
-  const searchParams = useSearchParams();
-  const occasion = searchParams.get('occasion') || 'Wedding';
+  const { selectedOccasion } = useOccasion();
+  const occasion = selectedOccasion || ''; // fallback to empty if none selected
 
   const [caterers, setCaterers] = useState<Caterer[]>([]);
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(null);
@@ -27,24 +26,34 @@ export default function CatererPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchCaterers().then((data) => {
-      setCaterers(data);
-      setLoading(false);
-    });
+    fetchCaterers()
+      .then((data) => {
+        setCaterers(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching caterers:', err);
+        setLoading(false);
+      });
   }, []);
 
-  const filteredCaterers = caterers.filter((c) => {
-    return (
-      (!selectedCuisine || c.cuisine.includes(selectedCuisine)) &&
-      (!vegOnly || c.vegOnly)
-    );
+  const filteredCaterers = caterers.filter((caterer) => {
+    const specialties = Array.isArray(caterer.specialties) ? caterer.specialties : [];
+
+    const matchesOccasion = !occasion || specialties.includes(occasion);
+    const matchesCuisine = !selectedCuisine || specialties.includes(selectedCuisine);
+    const matchesVeg = !vegOnly || caterer.vegOnly;
+
+    return matchesOccasion && matchesCuisine && matchesVeg;
   });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff9ec] to-[#fffef6] px-6 py-10">
-      <h1 className="text-4xl font-extrabold text-orange-600 mb-10 text-center">
-        Find Caterers for {occasion}
-      </h1>
+     <h1 className="text-4xl font-extrabold text-orange-600 mb-10 text-center">
+  {occasion && occasion.trim() !== ''
+    ? `Find Caterers for ${occasion}`
+    : 'Browse Caterers'}
+</h1>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10">
         {/* Filters */}

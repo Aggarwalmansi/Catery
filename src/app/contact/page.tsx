@@ -1,7 +1,7 @@
 
 "use client";
 
-import"./booking/styles/ contact.css"
+import"./booking/styles/contact.css"
 
 
 export default function ContactPage() {
