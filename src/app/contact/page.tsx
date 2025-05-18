@@ -1,8 +1,9 @@
 
 "use client";
 
-import"./booking/styles/contact.css"
-
+// import "@/app/booking/styles/contact.css";
+// Importing the CSS file for styling
+import '../booking/styles/contact.css';
 
 export default function ContactPage() {
   return (

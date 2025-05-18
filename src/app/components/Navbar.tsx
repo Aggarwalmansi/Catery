@@ -34,7 +34,7 @@ const Navbar = () => {
           </ul>
           
           <Link href="/book-now">
-            <button className="book-now-btn">Book Now</button>
+            <button className="book-now-btn">Login</button>
           </Link>
         </div>
       </div>
