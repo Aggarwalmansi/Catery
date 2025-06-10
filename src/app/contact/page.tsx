@@ -10,7 +10,7 @@ export default function ContactPage() {
     <div className="contact-container">
       <h1 className="contact-heading">Get in Touch with OccasionOS</h1>
       <div className="contact-info">
-        <p><strong>📍 Headquarters:</strong> 12, Royal Street, Jaipur, Rajasthan, India</p>
+        <p><strong>📍 Headquarters:</strong> 12, Royal Street, Lucknow, Uttar Pradesh, India</p>
         <p><strong>📞 Helpline:</strong> +91 99999 88888 (Mon-Sat, 10am to 6pm)</p>
         <p><strong>📧 Email:</strong> support@occasionos.com</p>
       </div>
