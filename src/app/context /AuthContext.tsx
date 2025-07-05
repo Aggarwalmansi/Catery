@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext,useEffect, useState, ReactNode, use } from 'react';
 
 type AuthContextType = {
   user: any;
@@ -11,11 +11,24 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
-  const login = (userData: any) => setUser(userData);
-  const logout = () => setUser(null);
-
+  useEffect(() => {
+   
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  
+}, []);
+const login = (userData:any) => {
+    setUser(userData);
+    localStorage.setItem('occasionUser', JSON.stringify(userData));
+  }
+const logout = () => {
+    setUser(null);
+    localStorage.removeItem('occasionUser');
+  };
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}

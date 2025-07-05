@@ -29,7 +29,7 @@ const Navbar = () => {
             <li><Link href="/">Home</Link></li>
             <li><Link href="/booking/caterer-profile">Browse Caterers</Link></li>
             <li><Link href="/booking/occasion">Plan Event</Link></li>
-            <li><Link href="/caterers">Donate</Link></li>
+          
             <li><Link href="/contact">Contact</Link></li>
           </ul>
           

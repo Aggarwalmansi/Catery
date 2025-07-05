@@ -3,7 +3,7 @@
 import GuestCountInput from "../components/occasion/GuestCountInput";
 import OccasionSelector from "../components/occasion/OccasionSelector";
 import MenuAutoSuggest from "../components/occasion/MenuAutoSuggest";
-import CustomizationOptions from "../components/occasion/CustomizationOptions";
+
 import ProceedToBookingButton from "../components/occasion/ProceedToBookingButton";
 import Footer from "../components/occasion/Footer";
 import styles from "../../../styles/Occasion.module.css";
@@ -16,7 +16,7 @@ export default function OccasionPlannerPage() {
       <GuestCountInput />
       <OccasionSelector />
       <MenuAutoSuggest />
-      <CustomizationOptions />
+
       <ProceedToBookingButton />
       <Footer /> 
     </div>

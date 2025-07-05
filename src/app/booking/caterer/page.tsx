@@ -2,13 +2,12 @@
 import { useEffect, useState } from 'react';
 import { fetchCaterers } from '@/app/utils/catererFetch';
 import CatererCard from '@/app/components/CatererCard';
-import { useOccasion } from '@/app/context /OccasionContext';// ✅ fixed the space issue
-
+import { useOccasion } from '@/app/context /OccasionContext';
 interface Caterer {
   id: string;
   name: string;
-  specialties: string[]; // e.g. ['Wedding', 'Birthday']
-  vegOnly: boolean;
+  specialties: string[]; 
+
   starting_price: number;
   rating: number;
   Photo: string;
@@ -18,11 +17,11 @@ interface Caterer {
 
 export default function CatererPage() {
   const { selectedOccasion } = useOccasion();
-  const occasion = selectedOccasion || ''; // fallback to empty if none selected
+  const occasion = selectedOccasion || ''; 
 
   const [caterers, setCaterers] = useState<Caterer[]>([]);
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(null);
-  const [vegOnly, setVegOnly] = useState(false);
+ 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +33,7 @@ export default function CatererPage() {
       .catch((err) => {
         console.error('Error fetching caterers:', err);
         setLoading(false);
+
       });
   }, []);
 
@@ -42,9 +42,9 @@ export default function CatererPage() {
 
     const matchesOccasion = !occasion || specialties.includes(occasion);
     const matchesCuisine = !selectedCuisine || specialties.includes(selectedCuisine);
-    const matchesVeg = !vegOnly || caterer.vegOnly;
+   
 
-    return matchesOccasion && matchesCuisine && matchesVeg;
+    return matchesOccasion && matchesCuisine;
   });
 
   return (
@@ -53,11 +53,11 @@ export default function CatererPage() {
   {occasion && occasion.trim() !== ''
     ? `Find Caterers for ${occasion}`
     : 'Browse Caterers'}
-</h1>
+    </h1>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10">
         {/* Filters */}
-        <div className="md:w-1/4 bg-white rounded-2xl p-6 shadow-xl border border-yellow-200">
+        <div className="md:w-1/4 bg-white rounded-2xl p-6 shadow-xl border border-yellow-200 sticky top-29 max-h-[85vh] overflow-auto">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">🔍 Filters</h2>
 
           <div className="mb-4">
@@ -74,20 +74,12 @@ export default function CatererPage() {
               <option value="Chinese">Chinese</option>
             </select>
           </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={vegOnly}
-              onChange={() => setVegOnly(!vegOnly)}
-              className="mr-2 accent-orange-500"
-            />
-            <label className="font-medium text-gray-700">Veg Only</label>
           </div>
-        </div>
+
+         
 
         {/* Caterer Cards */}
-        <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 object-contain">
           {loading ? (
             <p>Loading caterers...</p>
           ) : filteredCaterers.length === 0 ? (
@@ -97,8 +89,11 @@ export default function CatererPage() {
               <CatererCard key={caterer.id} caterer={caterer} />
             ))
           )}
-        </div>
+        
       </div>
     </div>
+    </div>
   );
+ 
 }
+

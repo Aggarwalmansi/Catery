@@ -1,16 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/context /AuthContext";
 import { fetchCaterers } from "@/app/utils/catererFetch";
 import CatererCard from "@/app/components/CatererCard";
 import { useOccasion } from "@/app/context /OccasionContext";
+import { useRouter } from "next/navigation";
 
 export default function BrowseCaterersPage() {
+  const router = useRouter();
+  const { user} = useAuth(); //user from context
+  const { selectedOccasion } = useOccasion(); // ✅ Get occasion from context
   const [caterers, setCaterers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const { selectedOccasion } = useOccasion(); // ✅ Get occasion from context
+  
 
   useEffect(() => {
+    if (!user) {
+      router.push("/login"); // Redirect to login if not authenticated
+    }
+  }, [user, router]);
+
+ 
+
+  useEffect(() => {
+    if (!user) {
     fetchCaterers()
       .then((data) => {
         setCaterers(data);
@@ -20,8 +34,9 @@ export default function BrowseCaterersPage() {
         console.error(err);
         setLoading(false);
       });
-  }, []);
-
+    }
+  }, [user]);
+  
   // ✅ Filter by selected occasion
   const filteredCaterers = selectedOccasion
     ? caterers.filter((caterer) =>

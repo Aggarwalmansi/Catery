@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import '../styles/occasion.css';
-import CustomizationOptions from '@/app/components/occasion/CustomizationOptions';
+
 import ProceedToBookingButton from '@/app/components/occasion/ProceedToBookingButton';
 import Footer from '@/app/components/occasion/Footer';
 
@@ -46,7 +46,7 @@ export default function OccasionPage() {
           ))}
         </div>
 
-        <CustomizationOptions />
+     
 
         <button onClick={handleNext} className="occasion-next-button">
           Proceed ➜

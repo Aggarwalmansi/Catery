@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../context /AuthContext';// ✅ Fixed path
+import { useAuth } from '../context /AuthContext';
 import '../booking/styles/auth.css';
 
 
@@ -12,7 +12,7 @@ import Link from 'next/link';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth(); // from your custom AuthContext
+  const { login } = useAuth(); 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +22,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // ✅ Required
+          'Content-Type': 'application/json', 
         },
         body: JSON.stringify({ email, password }),
       });
@@ -30,8 +30,8 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.success) {
-        login(data.user); // Save user to context
-        router.push('/dashboard'); // Redirect to dashboard
+        login(data.user); 
+        router.push('/dashboard'); 
       } else {
         alert(data.message || 'Login failed');
       }
