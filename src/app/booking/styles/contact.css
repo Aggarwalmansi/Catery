@@ -1,103 +1,85 @@
 /* src/app/contact/contact.css */
 
 .contact-container {
-    padding: 3rem;
+    padding: 3rem 1.5rem;
     max-width: 800px;
     margin: auto;
+    background: #faf9f6;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #fdfbfb, #ebedee);
-    animation: hueShift 30s infinite alternate;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    
   }
   
   .contact-heading {
     text-align: center;
-    font-size: 2.5rem;
-    color: #ff6600;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #d35400;
     margin-bottom: 2rem;
-    text-shadow: 0 0 10px #ffd700;
-    background: conic-gradient(from 180deg, #f90, #ff0, #f90);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rotateText 5s linear infinite;
   }
   
   .contact-info {
-    background-color: #fffef7;
-    border-radius: 20px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-left: 4px solid #f5b041;
     padding: 1.5rem;
+    border-radius: 10px;
     margin-bottom: 2rem;
+    font-size: 1rem;
+    color: #444;
     line-height: 1.6;
-    animation: tilt 8s infinite ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    
   }
   
   .contact-form-box {
-    background-color: #fffdf6;
-    padding: 2rem;
-    border-radius: 30px;
-    box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
-    transition: all 0.3s ease;
-    backdrop-filter: hue-rotate(5deg);
+    background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+
+
+  }
+  .contact-form-box:hover {
+    box-shadow: 0 6px 25px rgba(255, 165, 0, 0.15);
   }
   
   input, textarea {
     width: 100%;
-    padding: 1rem;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    background: #f8f8f8;
-    transition: all 0.2s ease-in-out;
-    font-family: 'Arial Rounded MT', sans-serif;
+  padding: 0.9rem 1rem;
+  margin-top: 1rem;
+  border: 1px solid #e0dcd2;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fdfcfb;
+  color: #333;
+  font-family: inherit;
+  transition: border 0.2s ease, background 0.2s ease;
   }
   
   input:focus, textarea:focus {
-    background: #fffaf0;
-    outline: 2px dashed #ffa500;
-    animation: flashFocus 1s ease-in-out;
+    background: #fffdf5;
+    border-color: #e67e22;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.15);
   }
   
+  
   .fancy-button {
-    margin-top: 1rem;
-    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-    border: none;
-    padding: 0.8rem 1.5rem;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    animation: bounceGlow 2s infinite;
+    margin-top: 1.5rem;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   }
   
   .fancy-button:hover {
-    transform: scale(1.05) rotate(1deg);
+    background-color: #d35400;
   }
   
-  /* 💡 Rare/underused animations */
-  @keyframes hueShift {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
-  }
-  
-  @keyframes flashFocus {
-    0%, 100% { box-shadow: 0 0 0px #ffa500; }
-    50% { box-shadow: 0 0 15px #ffa500; }
-  }
-  
-  @keyframes rotateText {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  @keyframes bounceGlow {
-    0%, 100% { box-shadow: 0 0 10px #fda085; transform: translateY(0); }
-    50% { box-shadow: 0 0 25px #f6d365; transform: translateY(-4px); }
-  }
-  
-  @keyframes tilt {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(0.5deg); }
-    100% { transform: rotate(0deg); }
-  }
-  
+ 

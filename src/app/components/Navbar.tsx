@@ -3,8 +3,20 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import '../booking/styles/navbar.css';
+import  {toast} from 'react-hot-toast';
+import { useAuth } from '../context /AuthContext';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+ const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    toast.success('🚪 Logged out successfully!');
+    router.push('/login');
+  };
+
   return (
     <nav className="navbar">
       <div className="container">
@@ -32,10 +44,15 @@ const Navbar = () => {
           
             <li><Link href="/contact">Contact</Link></li>
           </ul>
-          
-          <Link href="/login">
-            <button className="book-now-btn">Login</button>
-          </Link>
+          {user ? (
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <Link href="/login">
+              <button className="book-now-btn">Login</button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

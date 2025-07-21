@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 interface Caterer {
   id: string | number;
   name: string;
@@ -17,6 +18,7 @@ interface Props {
 export default function CatererCard({ caterer }: Props) {
   return (
     <div className="border rounded-xl shadow hover:shadow-lg transition">
+     
       <img
         src={caterer.Photo || "/fallback.jpg"}
         alt={caterer.name}

@@ -4,9 +4,11 @@ import { Sparkles, ChefHat, CalendarCheck } from 'lucide-react';
 import '../booking/styles/featured.css';
 
 
+
 const FeaturedServices = () => {
   return (
     <section className="featured-section">
+
       <div className="featured-container">
         <h2 className="featured-heading">Our Expert Services</h2>
         <p className="featured-subtext">

@@ -6,6 +6,7 @@ import { fetchCaterers } from "@/app/utils/catererFetch";
 import CatererCard from "@/app/components/CatererCard";
 import { useOccasion } from "@/app/context /OccasionContext";
 import { useRouter } from "next/navigation";
+import GoBackButton from "./components/GoBackButton";
 
 export default function BrowseCaterersPage() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function BrowseCaterersPage() {
 
   return (
     <div className="p-6">
+      <GoBackButton />
       <h1 className="text-2xl font-bold mb-6">
         {selectedOccasion
           ? `Caterers for "${selectedOccasion}"`

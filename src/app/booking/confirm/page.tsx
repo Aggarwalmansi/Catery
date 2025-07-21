@@ -2,6 +2,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import '../styles/confirm.css';
+import GoBackButton from '../caterer-profile/components/GoBackButton';
 
 export default function ConfirmPage() {
   const searchParams = useSearchParams();
@@ -19,6 +20,7 @@ export default function ConfirmPage() {
 
   return (
     <div className="confirm-wrapper">
+      <GoBackButton />
       <h1 className="confirm-heading">Confirm Your Booking</h1>
 
       <form onSubmit={handleSubmit} className="confirm-form">

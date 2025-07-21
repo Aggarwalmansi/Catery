@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   text-decoration: none;
+
 }
 
 .logo-image {
@@ -48,13 +49,14 @@
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
+
 }
 
 /* Navigation links */
 .nav-links {
   display: flex;
-  gap: 1.9rem;
+  gap: 1.7rem;
   list-style: none;
   font-weight: 500;
   color: #15803d;
@@ -71,6 +73,17 @@
 /* Book Now Button — no changes to original style */
 .book-now-btn {
   background: linear-gradient(to right, #fb923c, #facc15);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background 0.2s ease;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+.logout-btn {
+  background: linear-gradient(to right, #fcb785, #fde047);
   color: white;
   padding: 0.5rem 1.5rem;
   border-radius: 0.75rem;

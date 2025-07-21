@@ -4,14 +4,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context /AuthContext';
 import '../booking/styles/auth.css';
-
-
-
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const { login } = useAuth(); 
   const router = useRouter();
 
@@ -31,9 +30,10 @@ export default function LoginPage() {
 
       if (data.success) {
         login(data.user); 
-        router.push('/dashboard'); 
+        toast.success('🎉 Login successful! Welcome back.' );
+        router.push('/'); 
       } else {
-        alert(data.message || 'Login failed');
+        toast.error(data.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
