@@ -1,8 +1,9 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import '../styles/confirm.css';
-
 
 export default function ConfirmPage() {
   const searchParams = useSearchParams();
@@ -20,7 +21,6 @@ export default function ConfirmPage() {
 
   return (
     <div className="confirm-wrapper">
-     
       <h1 className="confirm-heading">Confirm Your Booking</h1>
 
       <form onSubmit={handleSubmit} className="confirm-form">
@@ -45,7 +45,13 @@ export default function ConfirmPage() {
 
         <div>
           <label>Location</label>
-          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="e.g. Indore, MP" required />
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="e.g. Indore, MP"
+            required
+          />
         </div>
 
         <button type="submit" className="confirm-button">
