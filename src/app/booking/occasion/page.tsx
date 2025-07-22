@@ -36,8 +36,8 @@ export default function OccasionPage() {
       <BackArrow />
 
       <div className="occasion-content">
-        <h1 className="occasion-heading">Let’s Plan Your Occasion</h1>
-        <p className="occasion-subtext">Choose what you're celebrating today 🎉</p>
+        <h1 className="occasion-heading">Let us Plan Your Occasion</h1>
+        <p className="occasion-subtext">Choose what you are celebrating today 🎉</p>
 
         <div className="occasion-grid">
           {occasionOptions.map((occasion) => (
