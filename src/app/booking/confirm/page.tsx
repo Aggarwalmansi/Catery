@@ -1,12 +1,7 @@
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
+'use client'; 
 
-const ConfirmPage = dynamic(() => import('./ConfirmPage'), { ssr: false });
+import ConfirmPage from './ConfirmPage';
 
-export default function ConfirmPageWrapper() {
-  return (
-    <Suspense fallback={<div>Loading booking form...</div>}>
-      <ConfirmPage />
-    </Suspense>
-  );
+export default function Page() {
+  return <ConfirmPage />;
 }
