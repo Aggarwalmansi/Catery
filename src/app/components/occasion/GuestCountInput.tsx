@@ -1,5 +1,6 @@
 import { useState } from "react";
-import '../../../styles/guestcount.css';
+import '../../booking/styles/guestcount.css';
+
 
 export default function GuestCountInput() {
   const [count, setCount] = useState("");

@@ -1,5 +1,6 @@
 import { useOccasion } from "@/app/context /OccasionContext";// removed extra space
-import '../../../styles/selectoccasion.css';
+import '../../booking/styles/selectoccasion.css';
+
 
 
 const occasions = [
