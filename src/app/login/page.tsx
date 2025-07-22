@@ -6,6 +6,7 @@ import { useAuth } from '../context /AuthContext';
 import '../booking/styles/auth.css';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import BackArrow from '../components/BackArrow';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -29,20 +30,26 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.success) {
-        login(data.user); 
-        toast.success('🎉 Login successful! Welcome back.' );
-        router.push('/'); 
-      } else {
-        toast.error(data.message || 'Login failed');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('Something went wrong during login.');
+  // Save user to localStorage so you stay logged in
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('user', JSON.stringify(data.user));
+  }
+
+  login(data.user); 
+  toast.success('🎉 Login successful! Welcome back.');
+  router.push('/');
+} else {
+  toast.error(data.message || 'Login failed');
+}
+} catch (error) {
+  console.error('Login error:', error);
+  alert('Something went wrong during login.');
     }
   };
 
   return (
     <div className="auth-container">
+      <BackArrow />
       <h2>Login to OccasionOS</h2>
       <form onSubmit={handleSubmit}>
         <input

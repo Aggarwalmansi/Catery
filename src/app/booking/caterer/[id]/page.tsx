@@ -1,34 +1,55 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import '../../styles/catererProfile.css';
 import Link from 'next/link';
+import BackArrow from '@/app/components/BackArrow';
 
 const CatererProfilePage = () => {
   const { id } = useParams();
+  const router = useRouter();
   const [caterer, setCaterer] = useState(null);
   const [plates, setPlates] = useState(0);
   const [date, setDate] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    const storedUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+
+    if (!storedUser) {
+      router.push('/login');
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
     const fetchCaterer = async () => {
       try {
         const res = await fetch(`https://6824dceb0f0188d7e72b2702.mockapi.io/caterers/caterer/${id}`);
         const data = await res.json();
-        console.log("Fetched Caterer Data:", data); // Debugging
         setCaterer(data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching caterer:", error);
+        setIsLoading(false);
       }
     };
-    fetchCaterer();
-  }, [id]);
 
-  if (!caterer) return <div>Loading...</div>;
+    fetchCaterer();
+  }, [id, isAuthenticated]);
+
+  if (!isAuthenticated) return null;
+  if (isLoading) return <div>Loading...</div>;
+  if (!caterer) return <div>Caterer not found.</div>;
 
   return (
     <div className="caterer-profile">
+      <BackArrow />
       <h1>{caterer.name}</h1>
       <img src={caterer.Photo} alt={caterer.name} className="caterer-photo" />
       <p><strong>City:</strong> {caterer.city}</p>

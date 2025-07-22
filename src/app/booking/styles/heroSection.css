@@ -7,8 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   font-family: 'Segoe UI', sans-serif;
+   background-color: #1a1a1a;
 }
 
 /* Fullscreen background image */
@@ -30,14 +30,9 @@
 /* Dark overlay for readability */
 .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    rgba(0, 0, 0, 0.4), 
-    rgba(0, 0, 0, 0.6)
-  );
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65));
   z-index: 2;
 }
 
@@ -48,51 +43,55 @@
   max-width: 900px;
   padding: 2rem;
   text-align:center;
+  color: #fff;
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 800;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  color: #fff8ec;
+  color: #fffdf6;
 }
 
 .hero-title .highlight {
-  color: #ffc76b; /* Golden orange highlight */
+  color: #ffce73;
+  font-weight: 900; /* Golden orange highlight */
 }
 
 .hero-description {
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: #f8f8f8;
-  max-width: 700px;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.75;
+  max-width: 720px;
   margin: 0 auto 2rem auto;
-  line-height: 1.7;
+  color: #f2f2f2;
 }
 
 .cta-button {
   background: linear-gradient(to right, #fb923c, #facc15);
   color: #1a1a1a;
-  font-weight: bold;
+  font-weight: 600;
   padding: 1rem 2rem;
   font-size: 1.1rem;
   border-radius: 2rem;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-  transition: background 0.3s ease, transform 0.2s ease;
   border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .cta-button:hover {
-  background: linear-gradient(to right, #ff9e3c, #fbbf24);
-  transform: translateY(-3px);
-}
+  background: linear-gradient(to right, #ffb347, #fcd34d);
+  transform: scale(1.03);}
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
+  .hero-content {
+    padding: 1.5rem;
+  }
+
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .hero-description {
@@ -100,7 +99,24 @@
   }
 
   .cta-button {
-    padding: 0.8rem 1.6rem;
     font-size: 1rem;
+    padding: 0.8rem 1.6rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+  }
+
+  .cta-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.75rem 1.4rem;
   }
 }

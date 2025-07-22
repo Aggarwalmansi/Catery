@@ -2,8 +2,9 @@
 
 .featured-section {
     width: 100%;
-    background-color: #ffffff;
-    padding: 8rem 1.5rem;
+    background: linear-gradient(to bottom, #fdfdfd, #fafafa);
+  padding: 6rem 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
   }
   
   .featured-container {
@@ -17,11 +18,14 @@
     font-weight: 700;
     color: #1f2937;
     margin-bottom: 1rem;
+    line-height: 1.2;
   }
   
   .featured-subtext {
     color: #6b7280;
+    font-size: 1.125rem;
     margin-bottom: 3rem;
+    padding: 0 1rem;
   }
   
   .featured-cards {
@@ -37,15 +41,19 @@
   }
   
   .featured-card {
-    border-radius: 1.5rem;
-    padding: 2rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-    background: linear-gradient(to bottom, #f9fafb, #ffffff);
+     border-radius: 1.5rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   }
   
   .featured-card:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.09);
   }
   
   .pink {
@@ -97,10 +105,12 @@
     font-size: 1.5rem;
     font-weight: 600;
     color: #374151;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   
   .card-text {
-    color: #6b7280;
+    color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.6;
+  padding: 0 0.5rem;
   }
-  

@@ -1,62 +1,77 @@
-/* whyOccasionOS.css */
-
 .why-occasion {
-    width: 100%;
-    background: linear-gradient(to bottom right, #fbcfe8, #fef9c3, white);
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  
-  .why-occasion .container {
-    max-width: 7xl;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    gap: 2rem;
-  }
-  
-  .why-occasion h2 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #1f2937; /* Gray-800 */
-    margin-bottom: 1rem;
-  }
-  
-  .why-occasion p {
-    color: #6b7280; /* Gray-500 */
-    margin-bottom: 3rem;
-  }
-  
+  width: 100%;
+  background: linear-gradient(to bottom right, #fbcfe8, #fef9c3, white);
+  padding: 5rem 1.5rem;
+}
+
+.why-occasion .container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+.why-occasion h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.why-occasion p {
+  color: #6b7280;
+  margin-bottom: 3rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.why-occasion .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
   .why-occasion .grid {
-    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .why-occasion .grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
   }
-  
-  .why-occasion .reason {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+}
+@media (max-width: 768px) {
+  .why-occasionos .features {
+    grid-template-columns: 1fr;
   }
-  
-  .why-occasion .reason-icon {
-    background-color: #fda4af; /* Rose-200 */
-    padding: 1rem;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-  }
-  
-  .why-occasion .reason h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #374151; /* Gray-700 */
-    margin-bottom: 0.5rem;
-  }
-  
-  .why-occasion .reason p {
-    color: #6b7280; /* Gray-500 */
-  }
-  
+}
+
+
+.why-occasion .reason {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.why-occasion .reason-icon {
+  background-color: #fda4af;
+  padding: 1rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.why-occasion .reason h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.why-occasion .reason p {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}

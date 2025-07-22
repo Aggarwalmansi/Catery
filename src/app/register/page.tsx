@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import '../booking/styles/auth.css';
+import BackArrow from '../components/BackArrow';
 
 
 export default function RegisterPage() {
@@ -28,6 +29,7 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-container">
+      <BackArrow />
       <h2>Register to OccasionOS</h2>
       <form onSubmit={handleRegister}>
         <input type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />

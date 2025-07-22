@@ -4,12 +4,13 @@
 // import "@/app/booking/styles/contact.css";
 // Importing the CSS file for styling
 import '../booking/styles/contact.css';
-import GoBackButton from '../booking/caterer-profile/components/GoBackButton';
+import BackArrow from '../components/BackArrow';
+
 
 export default function ContactPage() {
   return (
     <div className="contact-container">
-      <GoBackButton />
+    <BackArrow />
        
       <h1 className="contact-heading">Get in Touch with OccasionOS</h1>
       <div className="contact-info">

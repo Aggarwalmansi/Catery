@@ -17,13 +17,14 @@ interface Props {
 
 export default function CatererCard({ caterer }: Props) {
   return (
-    <div className="border rounded-xl shadow hover:shadow-lg transition">
-     
-      <img
-        src={caterer.Photo || "/fallback.jpg"}
-        alt={caterer.name}
-        className="h-48 w-full object-cover rounded-t-xl"
-      />
+    <div className="caterer-card border rounded-xl shadow hover:shadow-lg transition overflow-hidden bg-white">
+      <div className="relative w-full h-48">
+        <img
+          src={caterer.Photo || "/fallback.jpg"}
+          alt={caterer.name}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
       <div className="p-4">
         <h2 className="text-xl font-bold">{caterer.name}</h2>
         <p className="text-sm text-gray-600">{caterer.city || "Location not available"}</p>
@@ -35,8 +36,8 @@ export default function CatererCard({ caterer }: Props) {
         </p>
         <p className="text-sm mt-1 font-semibold">₹{caterer.starting_price}/plate</p>
         <Link href={`/booking/caterer/${caterer.id}`}>
-  <button className="view-profile-btn">View Profile</button>
-</Link>
+          <button className="view-profile-btn mt-3">View Profile</button>
+        </Link>
       </div>
     </div>
   );

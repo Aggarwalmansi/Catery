@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import '../styles/occasion.css';
-import GoBackButton from '../caterer-profile/components/GoBackButton';
+
 
 import ProceedToBookingButton from '@/app/components/occasion/ProceedToBookingButton';
 import Footer from '@/app/components/occasion/Footer';
+import BackArrow from '@/app/components/BackArrow';
 
 const occasionOptions = [
   'Wedding',
@@ -32,7 +33,7 @@ export default function OccasionPage() {
   return (
     
     <div className="occasion-wrapper">
-      <GoBackButton />
+      <BackArrow />
 
       <div className="occasion-content">
         <h1 className="occasion-heading">Let’s Plan Your Occasion</h1>

@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import '../booking/styles/navbar.css';
@@ -10,11 +10,15 @@ import { useRouter } from 'next/navigation';
 const Navbar = () => {
  const { user, logout } = useAuth();
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     toast.success('🚪 Logged out successfully!');
     router.push('/login');
+  };
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -34,9 +38,13 @@ const Navbar = () => {
           </div>
           <span className="logo-text">OccasionOS</span>
         </Link>
-
+         <button className="hamburger" onClick={toggleMenu}>
+          <span className="bar" />
+          <span className="bar" />
+          <span className="bar" />
+        </button>
         {/* Right Side: Nav Links + Book Button */}
-        <div className="nav-right">
+        <div className={`nav-right ${isMenuOpen ? 'open' : ''}`}>
           <ul className="nav-links">
             <li><Link href="/">Home</Link></li>
             <li><Link href="/booking/caterer-profile">Browse Caterers</Link></li>
