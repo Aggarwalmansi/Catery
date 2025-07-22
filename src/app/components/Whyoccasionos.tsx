@@ -11,7 +11,7 @@ const WhyOccasionOS = () => {
         {/* Section Title */}
         <h2>Why Choose OccasionOS?</h2>
         <p>
-          Where tradition embraces technology to create experiences you'll cherish forever.
+          Where tradition embraces technology to create experiences you will cherish forever.
         </p>
 
         {/* Grid with Reasons */}
