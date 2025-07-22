@@ -1,5 +1,6 @@
 import { useOccasion } from "@/app/context /OccasionContext"// fixed space typo
-import "../../styles/menu.css"; // adjust the path if needed
+import '../../../styles/menu.css';
+
 
 const mockMenus: Record<string, string[]> = {
   Birthday: ["Veg Manchurian", "Chowmein", "Cake", "Cold Drink"],

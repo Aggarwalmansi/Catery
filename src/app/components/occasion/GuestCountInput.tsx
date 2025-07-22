@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/guestcount.css"; // adjust the path as needed
+import '../../../styles/guestcount.css';
 
 export default function GuestCountInput() {
   const [count, setCount] = useState("");

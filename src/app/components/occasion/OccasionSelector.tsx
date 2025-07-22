@@ -1,5 +1,6 @@
 import { useOccasion } from "@/app/context /OccasionContext";// removed extra space
-import "../../styles/selectoccasion.css"; // adjust path if needed
+import '../../../styles/selectoccasion.css';
+
 
 const occasions = [
   { label: "Birthday", emoji: "🎉" },
