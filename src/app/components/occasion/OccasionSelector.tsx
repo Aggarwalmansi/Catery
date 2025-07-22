@@ -1,5 +1,5 @@
 import { useOccasion } from "@/app/context /OccasionContext";// removed extra space
-import '../../booking/styles/selectOccasion';
+import '../../booking/styles/selectOccasion.css';
 
 
 
