@@ -47,6 +47,7 @@ export default function LoginPage() {
     }
   };
 
+
   return (
     <div className="auth-container">
       <BackArrow />
@@ -72,6 +73,10 @@ export default function LoginPage() {
         Don't have an account?{' '}
         <Link href="/register">Register here</Link>
       </p>
+        console.log("Response status:", res.status);
+      const resText = await res.text();
+      console.log("Raw response:", resText);
+
     </div>
   );
 }
