@@ -13,10 +13,10 @@ const CatererProfilePage = () => {
   const [plates, setPlates] = useState(0);
   const [date, setDate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   useEffect(() => {
-    const storedUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+    const storedUser = typeof window !== 'undefined' ? localStorage.getItem('occasionUser') : null;
 
     if (!storedUser) {
       router.push('/login');
