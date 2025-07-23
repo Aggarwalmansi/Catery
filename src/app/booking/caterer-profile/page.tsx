@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from "@/app/context /AuthContext";
+import { useAuth } from "@/app/context/AuthContext";
 import { fetchCaterers } from "@/app/utils/catererFetch";
 import CatererCard from "@/app/components/CatererCard";
-import { useOccasion } from "@/app/context /OccasionContext";
+import { useOccasion } from "@/app/context/OccasionContext";
 import { useRouter } from "next/navigation";
 
 

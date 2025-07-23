@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../context /AuthContext';
+import { useAuth } from '../context/AuthContext';
 import '../booking/styles/auth.css';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
@@ -32,7 +32,7 @@ export default function LoginPage() {
       if (data.success) {
   // Save user to localStorage so you stay logged in
   if (typeof window !== 'undefined') {
-    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('occasionUser', JSON.stringify(data.user));
   }
 
   login(data.user); 

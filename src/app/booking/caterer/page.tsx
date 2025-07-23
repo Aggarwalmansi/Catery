@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { fetchCaterers } from '@/app/utils/catererFetch';
 import CatererCard from '@/app/components/CatererCard';
-import { useOccasion } from '@/app/context /OccasionContext';
+import { useOccasion } from '@/app/context/OccasionContext';
 interface Caterer {
   id: string;
   name: string;

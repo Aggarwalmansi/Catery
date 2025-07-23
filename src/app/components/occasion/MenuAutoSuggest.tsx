@@ -1,4 +1,4 @@
-import { useOccasion } from "@/app/context /OccasionContext"// fixed space typo
+import { useOccasion } from "@/app/context/OccasionContext"// fixed space typo
 import '../../booking/styles/menu.css';
 
 
