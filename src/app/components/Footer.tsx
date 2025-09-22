@@ -57,11 +57,13 @@ export default function Footer() {
                   My Orders
                 </Link>
               </li>
-              <li>
-                <a href="/#about" className="text-gray-400 hover:text-white">
-                  About Us
-                </a>
-              </li>
+             <li>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/#about" className="text-gray-400 hover:text-white">
+            About Us
+          </a>
+          </li>
+            
               <li>
                 <Link href="/faqs" className="text-gray-400 hover:text-white">
                   FAQs
