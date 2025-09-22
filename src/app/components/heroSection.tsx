@@ -9,7 +9,7 @@ const HeroSection = () => {
     <section className="hero-section">
       <div className="hero-background">
         <Image
-          src="/bhogimg.jpg"
+          src="/hero3.jpeg"
           alt="Catering Event"
           layout="fill"
           objectFit="cover"

@@ -8,11 +8,11 @@ import Testimonials from './components/Testimonial';
 // import OccasionSelector from './components/occasion/OccasionSelector';
 export default function Home() {
   return (
-    <main className="pt-20">
-      <Navbar />
+    <main>
+      {/* <Navbar /> */}
       <HeroSection/>
       <FeaturedServices/>
-      <WhyOccasionOS/>
+      {/* <WhyOccasionOS/> */}
       <Testimonials/>
     
 

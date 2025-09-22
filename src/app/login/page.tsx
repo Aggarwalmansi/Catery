@@ -23,9 +23,10 @@ export default function LoginPage() {
       const user = userCredential.user;
 
       const userData = {
-        uid: user.uid,
-        email: user.email,
-      };
+  uid: user.uid,
+  email: user.email ?? "",
+  displayName: user.displayName ?? "", // fallback if null
+};
 
       // Optional: Save user in localStorage
       if (typeof window !== 'undefined') {
