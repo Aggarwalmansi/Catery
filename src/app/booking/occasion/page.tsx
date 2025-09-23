@@ -75,7 +75,7 @@ export default function OccasionPage() {
       {/* Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-orange-600/10 to-amber-600/10"></div>
-        <div className="relative px-6 py-12">
+        <div className="relative px-6 py-24">
           <button
             onClick={handleBack}
             className="flex items-center gap-2 text-orange-700 hover:text-orange-800 transition-colors mb-12 group"
@@ -190,4 +190,3 @@ export default function OccasionPage() {
     </div>
   )
 }
- 
