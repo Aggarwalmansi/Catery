@@ -52,8 +52,8 @@ export default function MenuPage() {
             setMenuItems([...menuItems, newItem]);
             setIsAdding(false);
             setFormData({ name: '', description: '', price: '', category: 'Main Course', isVeg: true });
-        } catch (error) {
-            alert('Failed to add item');
+        } catch (error: any) {
+            alert(error.message || 'Failed to add item');
         }
     };
 
