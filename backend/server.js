@@ -38,8 +38,8 @@ app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/vendor', require('./routes/vendorRoutes'));
 
 // Health Check Route
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Catery Backend is running', timestamp: new Date() });
+app.get('/', (req, res) => {
+  return res.status(200).json({ status: 'ok', message: 'Catery Backend is running', timestamp: new Date() });
 });
 
 // Basic Error Handling
