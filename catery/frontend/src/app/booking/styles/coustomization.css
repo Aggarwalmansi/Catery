@@ -1,0 +1,53 @@
+/* Enhanced Customization Section for OccasionOS */
+
+.customizationContainer {
+    background: linear-gradient(to right, #fff7ed, #fafaf9);
+    padding: 2.5rem 2rem;
+    margin: 2.5rem auto 2rem;
+    border-radius: 1rem;
+    max-width: 800px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    font-family: 'Segoe UI', sans-serif;
+    border: 1px solid #fcd34d;
+    transition: all 0.3s ease;
+  }
+  
+  .customizationContainer h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #ea580c;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  
+  .options label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.05rem;
+    color: #374151;
+    font-weight: 500;
+  }
+  
+  .options select {
+    margin-top: 0.5rem;
+    padding: 0.65rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #fcd34d;
+    border-radius: 0.75rem;
+    background-color: #fffefc;
+    box-shadow: 0 4px 10px rgba(250, 204, 21, 0.05);
+    transition: border-color 0.3s ease;
+  }
+  
+  .options select:hover,
+  .options select:focus {
+    border-color: #fbbf24;
+    outline: none;
+  }
+  
