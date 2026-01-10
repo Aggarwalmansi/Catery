@@ -1,0 +1,85 @@
+/* src/app/contact/contact.css */
+
+.contact-container {
+    padding: 3rem 1.5rem;
+    max-width: 800px;
+    margin: auto;
+    background: #faf9f6;
+    font-family: 'Segoe UI', sans-serif;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    
+  }
+  
+  .contact-heading {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #d35400;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-info {
+    background-color: #ffffff;
+    border-left: 4px solid #f5b041;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    
+  }
+  
+  .contact-form-box {
+    background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+
+
+  }
+  .contact-form-box:hover {
+    box-shadow: 0 6px 25px rgba(255, 165, 0, 0.15);
+  }
+  
+  input, textarea {
+    width: 100%;
+  padding: 0.9rem 1rem;
+  margin-top: 1rem;
+  border: 1px solid #e0dcd2;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fdfcfb;
+  color: #333;
+  font-family: inherit;
+  transition: border 0.2s ease, background 0.2s ease;
+  }
+  
+  input:focus, textarea:focus {
+    background: #fffdf5;
+    border-color: #e67e22;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.15);
+  }
+  
+  
+  .fancy-button {
+    margin-top: 1.5rem;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  }
+  
+  .fancy-button:hover {
+    background-color: #d35400;
+  }
+  
+ 
