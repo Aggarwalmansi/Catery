@@ -15,9 +15,8 @@ app.use(helmet());            // Security headers
 
 // CORS Configuration
 const allowedOrigins = [
-  'https://occasionos.vercel.app',
-  'http://localhost:3000',
-  process.env.FRONTEND_URL
+  process.env.FRONTEND_URL,           // Production Frontend
+  'http://localhost:3000',            // Local Development
 ].filter(Boolean);
 
 // Logging Middleware
@@ -26,6 +25,20 @@ app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${origin}`);
   next();
 });
+
+// Database Connection Check
+const prisma = require('./utils/prisma');
+async function checkDbConnection() {
+  try {
+    await prisma.$connect();
+    console.log('✅ Database connected successfully');
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message);
+    // We don't exit process here strictly, to allow server to start even if DB is flaky initially, 
+    // but it's good to know. In production you might want to exit.
+  }
+}
+checkDbConnection();
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -36,7 +49,7 @@ app.use(cors({
     if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
-      console.log("CORS BLOCKED:", origin);
+      console.log(`CORS BLOCKED: ${origin}. Allowed: ${allowedOrigins.join(', ')}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
