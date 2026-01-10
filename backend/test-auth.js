@@ -2,7 +2,7 @@ const fetch = require('node-fetch'); // You might need to install node-fetch if 
 // Actually Node 18+ has native fetch.
 
 async function testAuth() {
-    const baseUrl = 'http://localhost:5000/api/auth';
+    const baseUrl = `${process.env.FRONTEND_URL}/api/auth`;
     const email = `test${Date.now()}@example.com`;
     const password = 'password123';
 
