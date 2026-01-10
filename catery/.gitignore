@@ -1,0 +1,10 @@
+# Ignore frontend repo
+OurOccasionOs/
+
+# Ignore OS & local junk
+.DS_Store
+.localized
+
+# Ignore env & deps
+node_modules/
+.env
