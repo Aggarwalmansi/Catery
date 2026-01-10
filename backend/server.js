@@ -14,21 +14,37 @@ const PORT = process.env.PORT || 5001;
 app.use(helmet());            // Security headers
 
 // CORS Configuration
-const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000'].filter(Boolean);
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://occasionos.vercel.app',
+  'http://localhost:3000'
+].filter(Boolean);
+
+// Logging Middleware
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${origin}`);
+  next();
+});
+
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (process.env.NODE_ENV !== 'production' || allowedOrigins.indexOf(origin) !== -1) {
+
+    // Check if origin is allowed
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
+      console.log("CORS BLOCKED:", origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
-app.use(morgan('dev'));       // Request logging
 app.use(express.json({ limit: '10mb' }));      // Parse JSON bodies (increased for photo uploads)
 
 // Routes
