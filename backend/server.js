@@ -15,9 +15,9 @@ app.use(helmet());            // Security headers
 
 // CORS Configuration
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
   'https://occasionos.vercel.app',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  process.env.FRONTEND_URL
 ].filter(Boolean);
 
 // Logging Middleware
