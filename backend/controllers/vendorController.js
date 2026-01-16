@@ -408,7 +408,7 @@ const deleteVendor = async (req, res) => {
         res.json({ message: 'Vendor profile and all related data deleted successfully' });
     } catch (error) {
         console.error('Delete error:', error);
-        res.status(500).json({ error: `Internal server error: ${error.message}` });
+        res.status(500).json({ error: 'Failed to delete vendor profile and associated data.' });
     }
 };
 

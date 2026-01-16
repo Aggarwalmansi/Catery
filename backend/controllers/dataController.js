@@ -5,8 +5,8 @@ const getOccasions = async (req, res) => {
         const occasions = await prisma.occasion.findMany();
         res.json(occasions);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch occasions' });
+        console.error('Fetch Occasions Error:', error);
+        res.status(500).json({ error: 'Failed to retrieve event occasions.' });
     }
 };
 
@@ -34,8 +34,8 @@ const getVendors = async (req, res) => {
 
         res.json(vendors);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch vendors' });
+        console.error('Fetch Vendors Error:', error);
+        res.status(500).json({ error: 'Failed to retrieve vendor listings.' });
     }
 };
 
@@ -68,8 +68,8 @@ const getVendorById = async (req, res) => {
 
         res.json(vendor);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch vendor' });
+        console.error('Fetch Vendor Detail Error:', error);
+        res.status(500).json({ error: 'Failed to retrieve vendor information.' });
     }
 };
 

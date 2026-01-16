@@ -10,7 +10,7 @@ async function verifyConnection() {
     console.log(`Checking connection to database...`);
 
     if (!process.env.DATABASE_URL) {
-        console.error('❌ Error: DATABASE_URL is not defined in .env');
+        console.error('Error: DATABASE_URL is not defined in .env');
         process.exit(1);
     }
 
@@ -19,21 +19,21 @@ async function verifyConnection() {
     try {
         console.log('Attempting to connect...');
         await prisma.$connect();
-        console.log('✅ Connection Successful!');
+        console.log('Connection Successful!');
 
         console.log('Attempting to fetch one user (read test)...');
         const user = await prisma.user.findFirst();
 
         if (user) {
-            console.log('✅ Read Successful: Found a user.');
+            console.log('Read Successful: Found a user.');
         } else {
-            console.log('✅ Read Successful: Database is empty (no users found), but connection works.');
+            console.log('Read Successful: Database is empty (no users found), but connection works.');
         }
 
         console.log('--- Verification Complete ---');
         console.log('If you see this, your LOCAL environment can connect to the database.');
     } catch (error) {
-        console.error('❌ Verification Failed:', error.message);
+        console.error('Verification Failed:', error.message);
         console.log('\nPossible causes:');
         console.log('1. IP Whitelist: Ensure 0.0.0.0/0 is allowed in MongoDB Atlas Network Access.');
         console.log('2. Credentials: Check username/password in DATABASE_URL.');

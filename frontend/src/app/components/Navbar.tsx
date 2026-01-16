@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logout()
-    toast.success("🚪 Logged out successfully!")
+    toast.success("Logged out successfully!")
     router.push("/login")
   }
 
@@ -29,7 +29,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 p-1 group-hover:shadow-md transition-all duration-200">
+            <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-gradient-to-br from-orange-50 to-amber-100 p-1 group-hover:shadow-md transition-all duration-200">
               <Image src="/logo.png" alt="OccasionOS Logo" width={32} height={32} className="object-cover rounded-md" />
             </div>
             <span className="text-xl font-semibold text-gray-900 tracking-tight">OccasionOS</span>
@@ -43,32 +43,39 @@ const Navbar = () => {
                 className="text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors duration-200 relative group"
               >
                 About Us
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-200 group-hover:w-full"></span>
               </Link>
               <Link
                 href="/booking/occasion"
                 className="text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors duration-200 relative group"
               >
                 Plan Event
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-200 group-hover:w-full"></span>
+              </Link>
+              <Link
+                href="/planner"
+                className="text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors duration-200 relative group"
+              >
+                Visualize
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-200 group-hover:w-full"></span>
               </Link>
               <Link
                 href="/#contact"
                 className="text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors duration-200 relative group"
               >
                 Contact
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-200 group-hover:w-full"></span>
               </Link>
             </nav>
 
             {/* Auth Section */}
             <div className="flex items-center">
               {user ? (
-                <ProfileIcon/>
+                <ProfileIcon />
               ) : (
                 <Link
                   href="/login"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md"
                 >
                   Sign In
                 </Link>
@@ -117,6 +124,13 @@ const Navbar = () => {
               Plan Event
             </Link>
             <Link
+              href="/planner"
+              className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg font-medium text-sm transition-colors duration-200"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Visualize
+            </Link>
+            <Link
               href="/#contact"
               className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg font-medium text-sm transition-colors duration-200"
               onClick={() => setIsMenuOpen(false)}
@@ -128,12 +142,12 @@ const Navbar = () => {
             <div className="pt-2 border-t border-gray-100">
               {user ? (
                 <div className="px-3 py-2">
-                  <ProfileIcon/>
+                  <ProfileIcon />
                 </div>
               ) : (
                 <Link
                   href="/login"
-                  className="block mx-3 my-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm text-center transition-all duration-200"
+                  className="block mx-3 my-2 bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium text-sm text-center transition-all duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Sign In

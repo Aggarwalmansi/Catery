@@ -12,7 +12,7 @@ const testimonialsData = [
   {
     name: "Manoj Bansal",
     review:
-      "I absolutely loved how the AI helped me plan the perfect menu for my housewarming party. It saved me so much time, and the guests couldn't stop talking about the food!",
+      "I absolutely loved how the platform helped me plan the perfect menu for my housewarming party. It saved me so much time, and the guests couldn't stop talking about the food!",
     image: "/professional-businessman.png",
     role: "Business Owner",
   },

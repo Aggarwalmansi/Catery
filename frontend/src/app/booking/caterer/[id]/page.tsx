@@ -158,7 +158,7 @@ export default function CatererProfilePage() {
 
       if (!res.ok) throw new Error("Booking failed");
 
-      toast.success(`🎉 Booking confirmed for ${caterer.name}!`);
+      toast.success(`Booking confirmed for ${caterer.name}!`);
       router.push("/profile")
     } catch (error) {
       console.error("Error saving order:", error)

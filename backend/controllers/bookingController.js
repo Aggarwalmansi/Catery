@@ -48,8 +48,8 @@ const createBooking = async (req, res) => {
 
         res.status(201).json({ message: 'Booking request sent', booking });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to create booking' });
+        console.error('Create Booking Error:', error);
+        res.status(500).json({ error: 'Process failed. Unable to create booking at this time.' });
     }
 };
 
@@ -68,8 +68,8 @@ const getMyBookings = async (req, res) => {
         });
         res.json(bookings);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch bookings' });
+        console.error('Fetch My Bookings Error:', error);
+        res.status(500).json({ error: 'Unable to retrieve your bookings.' });
     }
 };
 
@@ -103,8 +103,8 @@ const getVendorBookings = async (req, res) => {
 
         res.json(bookings);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch vendor bookings' });
+        console.error('Fetch Vendor Bookings Error:', error);
+        res.status(500).json({ error: 'Unable to retrieve vendor bookings.' });
     }
 };
 
@@ -166,8 +166,8 @@ const updateBooking = async (req, res) => {
 
         res.json(updatedBooking);
     } catch (error) {
-        console.error('[updateBooking] ERROR:', error);
-        res.status(500).json({ error: 'Failed to update booking', message: error.message });
+        console.error('Update Booking Error:', error);
+        res.status(500).json({ error: 'Failed to update booking details.' });
     }
 };
 
@@ -241,8 +241,8 @@ const updateBookingStatus = async (req, res) => {
 
         res.json(updatedBooking);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to update booking status' });
+        console.error('Update Booking Status Error:', error);
+        res.status(500).json({ error: 'Failed to update booking status.' });
     }
 };
 
@@ -258,8 +258,8 @@ const getAllBookings = async (req, res) => {
         });
         res.json(bookings);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch all bookings' });
+        console.error('Fetch All Bookings Error:', error);
+        res.status(500).json({ error: 'Unable to retrieve booking list.' });
     }
 };
 

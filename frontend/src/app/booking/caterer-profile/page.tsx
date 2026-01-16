@@ -10,11 +10,11 @@ import { useRouter } from "next/navigation";
 
 export default function BrowseCaterersPage() {
   const router = useRouter();
-  const { user} = useAuth(); //user from context
-  const { selectedOccasion } = useOccasion(); // ✅ Get occasion from context
+  const { user } = useAuth(); //user from context
+  const { selectedOccasion } = useOccasion(); // Get occasion from context
   const [caterers, setCaterers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
 
   useEffect(() => {
     if (!user) {
@@ -22,32 +22,32 @@ export default function BrowseCaterersPage() {
     }
   }, [user, router]);
 
- 
+
 
   useEffect(() => {
     if (!user) {
-    fetchCaterers()
-      .then((data) => {
-        setCaterers(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+      fetchCaterers()
+        .then((data) => {
+          setCaterers(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
     }
   }, [user]);
-  
-  // ✅ Filter by selected occasion
+
+  // Filter by selected occasion
   const filteredCaterers = selectedOccasion
     ? caterers.filter((caterer) =>
-        caterer.occasions?.includes(selectedOccasion)
-      )
+      caterer.occasions?.includes(selectedOccasion)
+    )
     : caterers;
 
   return (
     <div className="p-6">
-     
+
       <h1 className="text-2xl font-bold mb-6">
         {selectedOccasion
           ? `Caterers for "${selectedOccasion}"`

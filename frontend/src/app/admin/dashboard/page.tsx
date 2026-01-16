@@ -46,9 +46,18 @@ export default function AdminDashboard() {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
-            <div>
-                <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Platform Analytics</h1>
-                <p className="text-gray-500 mt-1">Real-time overview of your catering ecosystem.</p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Platform Analytics</h1>
+                    <p className="text-gray-500 mt-1">Real-time overview of your catering ecosystem.</p>
+                </div>
+                <Link
+                    href="/admin/support"
+                    className="bg-white border border-gray-200 text-gray-700 hover:text-orange-600 hover:border-orange-200 px-5 py-2.5 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all flex items-center gap-2 w-fit"
+                >
+                    <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+                    Support Console
+                </Link>
             </div>
 
             {/* Main Stats */}

@@ -3,7 +3,7 @@
 // const Footer = () => {
 //   return (
 //     <footer className="footer">
-//       <p>© 2025 OccasionOS · Made with ❤️ in India</p>
+//       <p>© 2025 OccasionOS · Made with in India</p>
 //       <div className="links">
 //         <a href="/about">About</a>
 //         <a href="/contact">Contact</a>

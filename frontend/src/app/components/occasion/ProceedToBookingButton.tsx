@@ -1,5 +1,5 @@
 import React from "react";
-import  "../../booking/styles/booking.css";
+import "../../booking/styles/booking.css";
 
 
 const ProceedToBookingButton = () => {
@@ -11,7 +11,7 @@ const ProceedToBookingButton = () => {
   return (
     <div className="proceed-container">
       <button className="proceed-button" onClick={handleClick}>
-        🚀 Proceed to Booking
+        Proceed to Booking
       </button>
     </div>
   );

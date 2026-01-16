@@ -25,9 +25,11 @@ const HeroSection = () => {
         <p className="hero-description">
           Book trusted caterers for weddings, poojas, parties & more — personalized menus, local kitchens, and unforgettable taste experiences.
         </p>
-        <Link href="/booking/occasion">
-          <button className="cta-button">Start Planning</button>
-        </Link>
+        <div className="hero-cta-group">
+          <Link href="/booking/occasion">
+            <button className="cta-button">Start Planning</button>
+          </Link>
+        </div>
       </div>
     </section>
   );

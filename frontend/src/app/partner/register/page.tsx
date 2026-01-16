@@ -40,27 +40,27 @@ export default function PartnerRegisterPage() {
       // 2. Login immediately
       login(data.user, data.token);
 
-      toast.success('🎉 Account created! Taking you to vendor setup...');
-      
+      toast.success('Account created! Taking you to vendor setup...');
+
       // 3. Redirect to Vendor Onboarding (Protected route, but now we have a token)
       router.push('/vendor/onboarding');
 
     } catch (error: any) {
       console.error("Registration error:", error);
-      toast.error(error.message || "❌ Something went wrong");
+      toast.error(error.message || "Something went wrong");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Internalize Your Catering Business
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-             Join OccasionOS as a Partner
-          </p>
-       </div>
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Internalize Your Catering Business
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Join OccasionOS as a Partner
+        </p>
+      </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -125,11 +125,11 @@ export default function PartnerRegisterPage() {
             </div>
 
             <div className="mt-6">
-               <div className="text-center">
-                   <Link href="/login" className="font-medium text-black hover:text-gray-500">
-                       Sign in here
-                   </Link>
-               </div>
+              <div className="text-center">
+                <Link href="/login" className="font-medium text-black hover:text-gray-500">
+                  Sign in here
+                </Link>
+              </div>
             </div>
           </div>
         </div>

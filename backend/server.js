@@ -31,9 +31,9 @@ const prisma = require('./utils/prisma');
 async function checkDbConnection() {
   try {
     await prisma.$connect();
-    console.log('✅ Database connected successfully');
+    console.log('Database connected successfully');
   } catch (error) {
-    console.error('❌ Database connection failed:', error.message);
+    console.error('Database connection failed:', error.message);
     // We don't exit process here strictly, to allow server to start even if DB is flaky initially, 
     // but it's good to know. In production you might want to exit.
   }
@@ -65,16 +65,25 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/data', require('./routes/dataRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/vendor', require('./routes/vendorRoutes'));
+app.use('/api/planner', require('./routes/plannerRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
+app.use('/api/queries', require('./routes/queryRoutes'));
 
 // Health Check Route
 app.get('/', (req, res) => {
   return res.status(200).json({ status: 'ok', message: 'Catery Backend is running', timestamp: new Date() });
 });
 
-// Basic Error Handling
+// Global Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+  // Log full error details for developers
+  console.error(`[ERROR] ${new Date().toISOString()}:`, err.stack);
+
+  // Send sanitized message to client
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({
+    error: statusCode === 500 ? 'An unexpected server error occurred' : err.message
+  });
 });
 
 // Start Server

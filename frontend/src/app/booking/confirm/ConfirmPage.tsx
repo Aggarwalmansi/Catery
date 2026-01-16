@@ -15,7 +15,7 @@ export default function ConfirmPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`🎉 Booking Confirmed for ${occasion}!\n📅 ${date} at ${time}\n👥 Guests: ${guests}\n📍 Location: ${location}`);
+    alert(`Booking Confirmed for ${occasion}!\n${date} at ${time}\nGuests: ${guests}\nLocation: ${location}`);
   };
 
   return (
@@ -46,7 +46,7 @@ export default function ConfirmPage() {
           <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="e.g. Indore, MP" required />
         </div>
 
-        <button type="submit" className="confirm-button">✅ Confirm Booking</button>
+        <button type="submit" className="confirm-button">Confirm Booking</button>
       </form>
     </div>
   );

@@ -7,7 +7,7 @@ const WhyOccasionOS = () => {
   return (
     <section className="why-occasion">
       <div className="container">
-        
+
         {/* Section Title */}
         <h2>Why Choose OccasionOS?</h2>
         <p>
@@ -16,7 +16,7 @@ const WhyOccasionOS = () => {
 
         {/* Grid with Reasons */}
         <div className="grid">
-          
+
           {/* Reason 1 */}
           <div className="reason">
             <div className="reason-icon">
@@ -44,9 +44,9 @@ const WhyOccasionOS = () => {
             <div className="reason-icon">
               <Sparkles className="w-10 h-10 text-purple-700" />
             </div>
-            <h3>AI-Driven Recommendations</h3>
+            <h3>Smart Recommendations</h3>
             <p>
-              Receive smart menu suggestions, trending recipes, and tips from the best event planners powered by AI.
+              Receive smart menu suggestions, trending recipes, and tips from the best event planners.
             </p>
           </div>
 

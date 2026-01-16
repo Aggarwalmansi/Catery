@@ -6,10 +6,10 @@
 // const CustomizationOptions = () => {
 //   return (
 //     <div className="customizationContainer">
-//       <h2>🎨 Customize Your Event</h2>
+//       <h2>Customize Your Event</h2>
 //       <div className="options">
 //         <label>
-//           🎁 Theme:
+//           Theme:
 //           <select>
 //             <option>Traditional</option>
 //             <option>Modern</option>
@@ -19,7 +19,7 @@
 //         </label>
 
 //         <label>
-//           🎶 Music Preference:
+//           Music Preference:
 //           <select>
 //             <option>Live Band</option>
 //             <option>DJ</option>
@@ -29,7 +29,7 @@
 //         </label>
 
 //         <label>
-//           🪑 Seating Style:
+//           Seating Style:
 //           <select>
 //             <option>Buffet</option>
 //             <option>Sit-down Dining</option>

@@ -29,7 +29,7 @@ export default function CatererCard({ caterer }: Props) {
         <h2 className="text-xl font-bold">{caterer.name}</h2>
         <p className="text-sm text-gray-600">{caterer.city || "Location not available"}</p>
         <p className="mt-1 text-yellow-500">
-          ⭐ {caterer.rating} ({caterer.reviewCount || 0})
+          Rating: {caterer.rating} ({caterer.reviewCount || 0})
         </p>
         <p className="text-sm text-gray-500 mt-1">
           {Array.isArray(caterer.specialties) ? caterer.specialties.join(", ") : "No cuisines listed"}

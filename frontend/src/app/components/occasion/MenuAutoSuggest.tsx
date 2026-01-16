@@ -18,12 +18,12 @@ export default function MenuAutoSuggest() {
 
   return (
     <div className="menu-suggestion-section">
-      <h3>AI-Generated Menu Suggestions:</h3>
+      <h3>Suggested Menu Items:</h3>
       {selectedOccasion ? (
         <ul className="menuList">
           {menu.map((item, index) => (
             <li key={index} className="menuItem">
-              🍽️ {item}
+              - {item}
             </li>
           ))}
         </ul>

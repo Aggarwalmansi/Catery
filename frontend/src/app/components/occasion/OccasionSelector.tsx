@@ -4,11 +4,11 @@
 
 
 // const occasions = [
-//   { label: "Birthday", emoji: "🎉" },
-//   { label: "Housewarming", emoji: "🏠" },
-//   { label: "Grih Pravesh", emoji: "🚪" },
-//   { label: "Wedding", emoji: "💍" },
-//   { label: "Anniversary", emoji: "❤️" },
+//   { label: "Birthday", emoji: "" },
+//   { label: "Housewarming", emoji: "" },
+//   { label: "Grih Pravesh", emoji: "" },
+//   { label: "Wedding", emoji: "" },
+//   { label: "Anniversary", emoji: "" },
 // ];
 
 // export default function OccasionSelector() {
