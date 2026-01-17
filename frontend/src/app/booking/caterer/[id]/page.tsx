@@ -20,7 +20,10 @@ import {
   AlertCircle,
   ChevronRight,
   X,
+  Sparkles,
 } from "lucide-react"
+import AkshayaDrawer from '@/app/components/occasion/AkshayaDrawer'
+import AnalysisCard from '@/app/components/occasion/AnalysisCard'
 import Link from "next/link"
 import { useAuth } from "../../../context/AuthContext"
 import { API_URL } from "@/lib/api"
@@ -55,6 +58,8 @@ export default function CatererProfilePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isBooking, setIsBooking] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  /* Akshaya AI State */
+  const [isAkshayaOpen, setIsAkshayaOpen] = useState(false)
 
   useEffect(() => {
     const fetchCaterer = async () => {
@@ -514,6 +519,19 @@ export default function CatererProfilePage() {
                     <p className="text-sm text-orange-600 mt-2 font-semibold">
                       Estimated cost: ₹{(plates * (selectedPackage?.price || caterer.starting_price)).toLocaleString()}
                     </p>
+
+                    {/* Akshaya AI Analysis Card */}
+                    <AnalysisCard
+                      onClick={() => {
+                        if (!selectedPackage) {
+                          toast.error("Please select a package first")
+                          return
+                        }
+                        setIsAkshayaOpen(true)
+                      }}
+                      disabled={!selectedPackage}
+                    />
+
                   </div>
 
                   <div>
@@ -573,6 +591,19 @@ export default function CatererProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+
+
+      {/* Akshaya AI Drawer */}
+      {selectedPackage && (
+        <AkshayaDrawer
+          isOpen={isAkshayaOpen}
+          onClose={() => setIsAkshayaOpen(false)}
+          catererInfo={{
+            menuItems: selectedPackage.items?.map((i: any) => i.menuItem) || []
+          }}
+        />
+      )}
+
+    </div >
   )
 }

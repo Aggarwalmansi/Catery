@@ -68,6 +68,7 @@ app.use('/api/vendor', require('./routes/vendorRoutes'));
 app.use('/api/planner', require('./routes/plannerRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes'));
 app.use('/api/queries', require('./routes/queryRoutes'));
+app.use('/api/akshaya', require('./routes/akshayaRoutes'));
 
 // Health Check Route
 app.get('/', (req, res) => {
