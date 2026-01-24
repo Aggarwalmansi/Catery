@@ -8,25 +8,57 @@ import { API_URL } from '@/lib/api';
 import Link from 'next/link';
 import BackArrow from '../components/BackArrow';
 import { motion } from 'framer-motion';
+import { User, Store } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const { login } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleDemoLogin = async (role: 'user' | 'caterer') => {
+    setIsDemoOpen(false);
+
+    if (role === 'user') {
+      setEmail('demo.user@occasionos.in');
+      setPassword('demo@123');
+    } else {
+      setEmail('caterer1@gmail.com');
+      setPassword('caterer1');
+    }
+
+    // Trigger submission after a brief delay to allow state update visually
+    setTimeout(() => {
+      const fakeEvent = { preventDefault: () => { } } as React.FormEvent;
+      handleSubmit(fakeEvent, role);
+    }, 100);
+  };
+
+  const handleSubmit = async (e: React.FormEvent, demoRole?: 'user' | 'caterer') => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
 
     try {
+      // Determine credentials to use
+      let loginEmail = email;
+      let loginPassword = password;
+
+      if (demoRole === 'user') {
+        loginEmail = 'demo.user@occasionos.in';
+        loginPassword = 'demo@123';
+      } else if (demoRole === 'caterer') {
+        loginEmail = 'caterer1@gmail.com';
+        loginPassword = 'caterer1';
+      }
+
       const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: loginEmail, password: loginPassword }),
       });
 
       const data = await res.json();
@@ -124,13 +156,56 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center space-y-4">
           <p className="text-sm text-gray-500">
             Don't have an account?{' '}
             <Link href="/register" className="font-semibold text-black hover:underline">
               Create one
             </Link>
           </p>
+
+          <div className="relative inline-block text-left">
+            <button
+              type="button"
+              onClick={() => setIsDemoOpen(!isDemoOpen)}
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#b8941f] hover:text-[#8c7017] transition-colors py-2 px-4 rounded-full bg-[#fcfbf4] border border-[#fcfbf4] hover:bg-[#fffdf5] hover:border-[#e6d5a6]"
+            >
+              <span className="text-lg"></span> Try Demo Account
+            </button>
+
+            {isDemoOpen && (
+              <div
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden z-10 animate-in slide-in-from-bottom-2 fade-in duration-200"
+                role="menu"
+              >
+                <div className="py-1" role="none">
+                  <button
+                    onClick={() => handleDemoLogin('user')}
+                    className="group flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    role="menuitem"
+                  >
+                    <User className="mr-3 h-4 w-4 text-gray-400 group-hover:text-[#b8941f]" />
+                    Demo User
+                  </button>
+                  <button
+                    onClick={() => handleDemoLogin('caterer')}
+                    className="group flex w-full items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-50"
+                    role="menuitem"
+                  >
+                    <Store className="mr-3 h-4 w-4 text-gray-400 group-hover:text-[#b8941f]" />
+                    Demo Caterer
+                  </button>
+                </div>
+                {/* Little triangle pointer */}
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 border-r border-b border-black/5"></div>
+              </div>
+            )}
+
+            {/* Invisible overlay to close dropdown when clicking outside */}
+            {isDemoOpen && (
+              <div className="fixed inset-0 z-0" onClick={() => setIsDemoOpen(false)} />
+            )}
+          </div>
         </div>
       </motion.div>
     </div>

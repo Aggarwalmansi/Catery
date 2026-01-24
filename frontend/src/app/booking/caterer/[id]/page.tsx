@@ -24,8 +24,10 @@ import {
 } from "lucide-react"
 import AkshayaDrawer from '@/app/components/occasion/AkshayaDrawer'
 import AnalysisCard from '@/app/components/occasion/AnalysisCard'
+import KutumbhHeaderCard from '@/app/components/kutumbh/KutumbhHeaderCard'
 import Link from "next/link"
 import { useAuth } from "../../../context/AuthContext"
+import { useKutumbhContext } from "../../../context/KutumbhContext"
 import { API_URL } from "@/lib/api"
 import { toast } from "react-hot-toast"
 
@@ -50,6 +52,7 @@ export default function CatererProfilePage() {
   const { id } = useParams()
   const router = useRouter()
   const { user, token } = useAuth()
+  const { startRoom } = useKutumbhContext()
   const [caterer, setCaterer] = useState<Caterer | null>(null)
   const [selectedPackage, setSelectedPackage] = useState<any | null>(null)
   const [plates, setPlates] = useState(10)
@@ -60,6 +63,9 @@ export default function CatererProfilePage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   /* Akshaya AI State */
   const [isAkshayaOpen, setIsAkshayaOpen] = useState(false)
+
+  /* Kutumbh State */
+  const [isCreatingRoom, setIsCreatingRoom] = useState(false)
 
   useEffect(() => {
     const fetchCaterer = async () => {
@@ -113,6 +119,59 @@ export default function CatererProfilePage() {
 
     if (id) fetchCaterer()
   }, [id])
+
+  const handleOpenKutumbh = async () => {
+    if (!user) {
+      toast.error("Please log in to start a Kutumbh room")
+      router.push("/login")
+      return
+    }
+
+    // We don't strictly need a selectedPackage anymore, but let's ensure caterer is loaded
+    if (!caterer) {
+      toast.error("Caterer data not loaded")
+      return
+    }
+
+    setIsCreatingRoom(true)
+
+    try {
+      // Create new room
+      const res = await fetch(`${API_URL}/kutumbh/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          catererId: caterer.id,
+          packageId: selectedPackage?.id // Optional
+        })
+      })
+
+      if (!res.ok) throw new Error("Failed to create room")
+
+      const data = await res.json()
+
+      // Start room using context
+      startRoom({
+        roomId: data.roomId,
+        userId: user.id,
+        userName: user.name || "Host",
+        packageName: selectedPackage?.name,
+        catererId: caterer.id,
+        catererName: caterer.name,
+        isHost: true
+      })
+
+      toast.success("Kutumbh room created!")
+    } catch (error) {
+      console.error("Error creating room:", error)
+      toast.error("Failed to create Kutumbh room")
+    } finally {
+      setIsCreatingRoom(false)
+    }
+  }
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -442,149 +501,161 @@ export default function CatererProfilePage() {
 
           {/* Booking Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-3xl shadow-2xl border border-orange-100 p-8 sticky top-8">
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                  <Calendar className="w-8 h-8 text-white" />
+            <div className="sticky top-8 space-y-6">
+              <KutumbhHeaderCard
+                onOpenRoom={handleOpenKutumbh}
+                disabled={caterer.status === 'PAUSED' || isCreatingRoom}
+              />
+              <div className="bg-white rounded-3xl shadow-2xl border border-orange-100 p-8">
+                <div className="text-center mb-8">
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Calendar className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">Book This Caterer</h3>
+                  <p className="text-gray-600 leading-relaxed">Secure your date with premium catering</p>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Book This Caterer</h3>
-                <p className="text-gray-600 leading-relaxed">Secure your date with premium catering</p>
-              </div>
 
-              {caterer.status === 'PAUSED' ? (
-                <div className="bg-red-50 border-2 border-red-100 rounded-2xl p-6 text-center mb-6">
-                  <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-3" />
-                  <p className="text-red-700 font-bold mb-1 text-lg">Currently Not Accepting Bookings</p>
-                  <p className="text-red-600/80">Please check back later or contact us via support for inquiries.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleBooking} className="space-y-6">
-                  {caterer.packages && caterer.packages.length > 0 && (
+
+
+                {caterer.status === 'PAUSED' ? (
+                  <div className="bg-red-50 border-2 border-red-100 rounded-2xl p-6 text-center mb-6">
+                    <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-3" />
+                    <p className="text-red-700 font-bold mb-1 text-lg">Currently Not Accepting Bookings</p>
+                    <p className="text-red-600/80">Please check back later or contact us via support for inquiries.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleBooking} className="space-y-6">
+                    {caterer.packages && caterer.packages.length > 0 && (
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-3">
+                          <ChefHat className="w-4 h-4 inline mr-2" />
+                          Select Package
+                        </label>
+                        <div className="space-y-3">
+                          {caterer.packages.map((pkg: any) => (
+                            <div
+                              key={pkg.id}
+                              onClick={() => {
+                                setSelectedPackage(pkg)
+                                setPlates(pkg.minPlates)
+                              }}
+                              className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedPackage?.id === pkg.id
+                                ? 'border-orange-500 bg-orange-50 shadow-md'
+                                : 'border-gray-200 hover:border-orange-200 hover:bg-orange-50/50'
+                                }`}
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <h4 className="font-bold text-gray-800">{pkg.name}</h4>
+                                <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">
+                                  ₹{pkg.price}/plate
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-2">{pkg.description}</p>
+                              <div className="flex flex-wrap gap-1">
+                                {pkg.items?.slice(0, 3).map((item: any, idx: number) => (
+                                  <span key={idx} className="text-xs bg-gray-100 px-2 py-1 rounded">
+                                    {item.menuItem?.name}
+                                  </span>
+                                ))}
+                                {pkg.items?.length > 3 && (
+                                  <span className="text-xs text-gray-500">+{pkg.items.length - 3} more</span>
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-500 mt-2">Min: {pkg.minPlates} plates</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+
+
                     <div>
                       <label className="block text-sm font-bold text-gray-700 mb-3">
-                        <ChefHat className="w-4 h-4 inline mr-2" />
-                        Select Package
+                        <Users className="w-4 h-4 inline mr-2" />
+                        Number of Plates
                       </label>
-                      <div className="space-y-3">
-                        {caterer.packages.map((pkg: any) => (
-                          <div
-                            key={pkg.id}
-                            onClick={() => {
-                              setSelectedPackage(pkg)
-                              setPlates(pkg.minPlates)
-                            }}
-                            className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedPackage?.id === pkg.id
-                              ? 'border-orange-500 bg-orange-50 shadow-md'
-                              : 'border-gray-200 hover:border-orange-200 hover:bg-orange-50/50'
-                              }`}
-                          >
-                            <div className="flex justify-between items-start mb-2">
-                              <h4 className="font-bold text-gray-800">{pkg.name}</h4>
-                              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">
-                                ₹{pkg.price}/plate
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-600 mb-2">{pkg.description}</p>
-                            <div className="flex flex-wrap gap-1">
-                              {pkg.items?.slice(0, 3).map((item: any, idx: number) => (
-                                <span key={idx} className="text-xs bg-gray-100 px-2 py-1 rounded">
-                                  {item.menuItem?.name}
-                                </span>
-                              ))}
-                              {pkg.items?.length > 3 && (
-                                <span className="text-xs text-gray-500">+{pkg.items.length - 3} more</span>
-                              )}
-                            </div>
-                            <p className="text-xs text-gray-500 mt-2">Min: {pkg.minPlates} plates</p>
-                          </div>
-                        ))}
+                      <input
+                        type="number"
+                        min={selectedPackage?.minPlates || caterer.minOrder || 10}
+                        required
+                        placeholder={`Minimum ${selectedPackage?.minPlates || caterer.minOrder || 10} plates`}
+                        value={plates}
+                        onChange={(e) => setPlates(Number(e.target.value))}
+                        className="w-full border-2 border-orange-100 focus:border-orange-300 focus:ring-2 focus:ring-orange-100 px-4 py-4 rounded-xl bg-white shadow-sm transition-all text-gray-700 font-medium text-lg"
+                      />
+                      <p className="text-sm text-orange-600 mt-2 font-semibold">
+                        Estimated cost: ₹{(plates * (selectedPackage?.price || caterer.starting_price)).toLocaleString()}
+                      </p>
+
+                      {/* Akshaya AI Analysis Card */}
+                      <AnalysisCard
+                        onClick={() => {
+                          if (!selectedPackage) {
+                            toast.error("Please select a package first")
+                            return
+                          }
+                          setIsAkshayaOpen(true)
+                        }}
+                        disabled={!selectedPackage}
+                      />
+
+
+
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-3">
+                        <Calendar className="w-4 h-4 inline mr-2" />
+                        Event Date
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        min={new Date().toISOString().split("T")[0]}
+                        className="w-full border-2 border-orange-100 focus:border-orange-300 focus:ring-2 focus:ring-orange-100 px-4 py-4 rounded-xl bg-white shadow-sm transition-all text-gray-700 font-medium text-lg"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-3">
+                        <Home className="w-4 h-4 inline mr-2" />
+                        Event Address
+                      </label>
+                      <textarea
+                        required
+                        placeholder="Enter your event venue address..."
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        rows={4}
+                        className="w-full border-2 border-orange-100 focus:border-orange-300 focus:ring-2 focus:ring-orange-100 px-4 py-4 rounded-xl bg-white shadow-sm transition-all text-gray-700 font-medium resize-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isBooking}
+                      className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-5 rounded-xl font-bold text-xl hover:from-orange-600 hover:to-amber-600 transition-all transform hover:scale-105 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                      {isBooking ? "Processing..." : "Confirm Booking"}
+                    </button>
+
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-gray-600 bg-green-50 rounded-xl p-3 border border-green-200">
+                        <Phone className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">We'll call you within 2 hours</span>
                       </div>
                     </div>
-                  )}
+                  </form>
+                )}
 
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-3">
-                      <Users className="w-4 h-4 inline mr-2" />
-                      Number of Plates
-                    </label>
-                    <input
-                      type="number"
-                      min={selectedPackage?.minPlates || caterer.minOrder || 10}
-                      required
-                      placeholder={`Minimum ${selectedPackage?.minPlates || caterer.minOrder || 10} plates`}
-                      value={plates}
-                      onChange={(e) => setPlates(Number(e.target.value))}
-                      className="w-full border-2 border-orange-100 focus:border-orange-300 focus:ring-2 focus:ring-orange-100 px-4 py-4 rounded-xl bg-white shadow-sm transition-all text-gray-700 font-medium text-lg"
-                    />
-                    <p className="text-sm text-orange-600 mt-2 font-semibold">
-                      Estimated cost: ₹{(plates * (selectedPackage?.price || caterer.starting_price)).toLocaleString()}
-                    </p>
-
-                    {/* Akshaya AI Analysis Card */}
-                    <AnalysisCard
-                      onClick={() => {
-                        if (!selectedPackage) {
-                          toast.error("Please select a package first")
-                          return
-                        }
-                        setIsAkshayaOpen(true)
-                      }}
-                      disabled={!selectedPackage}
-                    />
-
+                <div className="mt-8 pt-6 border-t border-gray-100">
+                  <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                    <Mail className="w-4 h-4" />
+                    <span>Booking confirmation via email</span>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-3">
-                      <Calendar className="w-4 h-4 inline mr-2" />
-                      Event Date
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                      min={new Date().toISOString().split("T")[0]}
-                      className="w-full border-2 border-orange-100 focus:border-orange-300 focus:ring-2 focus:ring-orange-100 px-4 py-4 rounded-xl bg-white shadow-sm transition-all text-gray-700 font-medium text-lg"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-3">
-                      <Home className="w-4 h-4 inline mr-2" />
-                      Event Address
-                    </label>
-                    <textarea
-                      required
-                      placeholder="Enter your event venue address..."
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      rows={4}
-                      className="w-full border-2 border-orange-100 focus:border-orange-300 focus:ring-2 focus:ring-orange-100 px-4 py-4 rounded-xl bg-white shadow-sm transition-all text-gray-700 font-medium resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isBooking}
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-5 rounded-xl font-bold text-xl hover:from-orange-600 hover:to-amber-600 transition-all transform hover:scale-105 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    {isBooking ? "Processing..." : "Confirm Booking"}
-                  </button>
-
-                  <div className="text-center">
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-600 bg-green-50 rounded-xl p-3 border border-green-200">
-                      <Phone className="w-4 h-4 text-green-600" />
-                      <span className="font-medium">We'll call you within 2 hours</span>
-                    </div>
-                  </div>
-                </form>
-              )}
-
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                  <Mail className="w-4 h-4" />
-                  <span>Booking confirmation via email</span>
                 </div>
               </div>
             </div>

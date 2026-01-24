@@ -19,6 +19,8 @@ model User {
   bookings  Booking[]
   queries   Query[]
   vendor    Vendor?   // Relation to Vendor profile if user is a caterer
+  kutumbhRooms KutumbhRoom[]
+  enquiries    Enquiry[]
 }
 
 model Vendor {
@@ -45,6 +47,8 @@ model Vendor {
   menuItems   MenuItem[]
   packages    Package[]
   bookings    Booking[]
+  enquiries   Enquiry[]
+  kutumbhRooms KutumbhRoom[]
 }
 
 enum VendorStatus {
@@ -89,6 +93,7 @@ model Package {
   vendor      Vendor        @relation(fields: [vendorId], references: [id])
   items       PackageItem[]
   bookings    Booking[]
+  activeKutumbhRooms KutumbhRoom[]
 }
 
 model PackageItem {
@@ -107,6 +112,7 @@ model Booking {
   userId      String        @db.ObjectId
   vendorId    String        @db.ObjectId
   packageId   String?       @db.ObjectId
+  enquiryId   String?       @db.ObjectId
   occasion    String
   date        DateTime
   guestCount  Int
@@ -123,6 +129,7 @@ model Booking {
   user        User          @relation(fields: [userId], references: [id])
   vendor      Vendor        @relation(fields: [vendorId], references: [id])
   package     Package?      @relation(fields: [packageId], references: [id])
+  enquiry     Enquiry?      @relation(fields: [enquiryId], references: [id])
 }
 
 model Query {
@@ -156,4 +163,58 @@ enum BookingStatus {
   REJECTED_BY_VENDOR
   CANCELLED_BY_ADMIN
   CANCELLED
+}
+
+model KutumbhRoom {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  roomId        String   @unique
+  hostUserId    String   @db.ObjectId
+  packageId     String?  @db.ObjectId
+  catererId     String   @db.ObjectId
+  
+  // Serialized state including items, addons, comments, restrictions, total price, and lock status
+  currentState  Json
+  
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  host          User     @relation(fields: [hostUserId], references: [id])
+  package       Package? @relation(fields: [packageId], references: [id])
+  caterer       Vendor   @relation(fields: [catererId], references: [id])
+  enquiries     Enquiry[]
+}
+
+model Enquiry {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  catererId     String   @db.ObjectId
+  roomId        String   @db.ObjectId
+  
+  status        EnquiryStatus @default(PENDING)
+  
+  // Content
+  selectedItems Json     // Array of items with details
+  notes         String?
+  guestCount    Int?
+  itemCount     Int
+  
+  // Caterer response
+  quotePrice    Float?
+  catererMessage String?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  user          User     @relation(fields: [userId], references: [id])
+  caterer       Vendor   @relation(fields: [catererId], references: [id])
+  room          KutumbhRoom @relation(fields: [roomId], references: [id])
+  bookings      Booking[]
+}
+
+enum EnquiryStatus {
+  PENDING
+  RESPONDED
+  ACCEPTED
+  CLOSED
 }

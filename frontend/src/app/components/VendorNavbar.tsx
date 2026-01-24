@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useAuth } from "../context/AuthContext"
 import { useRouter } from "next/navigation"
-import { Store, Package, UtensilsCrossed, ClipboardList, LayoutDashboard } from "lucide-react"
+import { Store, Package, UtensilsCrossed, ClipboardList, LayoutDashboard, MessageSquare } from "lucide-react"
 
 const VendorNavbar = () => {
     const { user, logout } = useAuth()
@@ -65,6 +65,13 @@ const VendorNavbar = () => {
                         >
                             <UtensilsCrossed className="w-4 h-4" />
                             Menu
+                        </Link>
+                        <Link
+                            href="/vendor/enquiries"
+                            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors font-medium"
+                        >
+                            <MessageSquare className="w-4 h-4" />
+                            Enquiries
                         </Link>
                         <Link
                             href="/"

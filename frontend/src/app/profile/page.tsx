@@ -21,6 +21,7 @@ import {
   Shield,
   Award,
 } from "lucide-react"
+import UserEnquiries from "@/app/components/profile/UserEnquiries"
 
 interface Order {
   id: string
@@ -113,7 +114,7 @@ export default function ProfilePage() {
   }
 
   /* Support / Query State */
-  const [activeTab, setActiveTab] = useState<'orders' | 'support'>('orders')
+  const [activeTab, setActiveTab] = useState<'orders' | 'support' | 'enquiries'>('orders')
   const [queries, setQueries] = useState<any[]>([])
   const [queryLoading, setQueryLoading] = useState(false)
   const [isNewQueryOpen, setIsNewQueryOpen] = useState(false)
@@ -261,8 +262,8 @@ export default function ProfilePage() {
       <button
         onClick={() => setActiveTab('orders')}
         className={`pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'orders'
-            ? 'border-orange-500 text-orange-600'
-            : 'border-transparent text-gray-500 hover:text-gray-700'
+          ? 'border-orange-500 text-orange-600'
+          : 'border-transparent text-gray-500 hover:text-gray-700'
           }`}
       >
         My Orders
@@ -270,11 +271,20 @@ export default function ProfilePage() {
       <button
         onClick={() => setActiveTab('support')}
         className={`pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'support'
-            ? 'border-orange-500 text-orange-600'
-            : 'border-transparent text-gray-500 hover:text-gray-700'
+          ? 'border-orange-500 text-orange-600'
+          : 'border-transparent text-gray-500 hover:text-gray-700'
           }`}
       >
         Support Requests
+      </button>
+      <button
+        onClick={() => setActiveTab('enquiries')}
+        className={`pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'enquiries'
+          ? 'border-orange-500 text-orange-600'
+          : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+      >
+        My Enquiries
       </button>
     </div>
   )
@@ -582,6 +592,11 @@ export default function ProfilePage() {
               </div>
             )}
           </div>
+        )}
+
+        {/* ENQUIRIES TAB */}
+        {activeTab === 'enquiries' && (
+          <UserEnquiries />
         )}
 
       </div>

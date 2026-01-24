@@ -69,6 +69,7 @@ app.use('/api/planner', require('./routes/plannerRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes'));
 app.use('/api/queries', require('./routes/queryRoutes'));
 app.use('/api/akshaya', require('./routes/akshayaRoutes'));
+app.use('/api/kutumbh', require('./routes/kutumbhRoutes'));
 
 // Health Check Route
 app.get('/', (req, res) => {
@@ -88,6 +89,11 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+// Start Server
+const server = require('http').createServer(app);
+const socketIo = require('./sockets');
+socketIo.init(server);
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

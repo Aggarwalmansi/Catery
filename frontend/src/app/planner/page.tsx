@@ -1,6 +1,24 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import * as fabric from 'fabric';
+import {
+    Maximize,
+    Users,
+    Clock,
+    Layout,
+    Play,
+    Trash2,
+    RotateCw,
+    Plus,
+    Utensils,
+    Download,
+    FileText,
+    HelpCircle,
+    X,
+    ChevronRight,
+    Armchair,
+    Square
+} from 'lucide-react';
 import './planner.css';
 
 /**
@@ -42,13 +60,12 @@ const VENUE_PRESETS = {
 };
 
 // Initial Base Scale: 1 foot = 10 pixels for internal logic
-// We will use a dynamic renderScale for the visual canvas
-const BASE_SCALE = 10;
-const TARGET_CANVAS_SIZE = 800; // Large, comfortable working area regardless of venue size
+const TARGET_CANVAS_SIZE = 800;
 
 const EventPlanner = () => {
     const canvasRef = useRef(null);
     const fabricCanvasRef = useRef(null);
+    const containerRef = useRef(null);
 
     // Venue configuration
     const [venuePreset, setVenuePreset] = useState('banquetHall');
@@ -63,6 +80,7 @@ const EventPlanner = () => {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [results, setResults] = useState(null);
     const [showHeatmap, setShowHeatmap] = useState(false);
+    const [showResults, setShowResults] = useState(false);
 
     // Object tracking
     const [selectedObject, setSelectedObject] = useState(null);
@@ -70,10 +88,6 @@ const EventPlanner = () => {
 
     // UI state
     const [showHowItWorks, setShowHowItWorks] = useState(false);
-
-    // Narrative insights state
-    const [narrativeInsights, setNarrativeInsights] = useState(null);
-    const [isGeneratingNarrative, setIsGeneratingNarrative] = useState(false);
 
     // Calculate dynamic scale factor to fill target size
     // This ensures a 50x50 venue looks as large as an 80x80 venue on screen
@@ -91,9 +105,11 @@ const EventPlanner = () => {
     const handleVenuePresetChange = (preset) => {
         setVenuePreset(preset);
         const venue = VENUE_PRESETS[preset];
-        setVenueLengthFt(venue.lengthFt);
-        setVenueWidthFt(venue.widthFt);
-        setGuestCount(venue.capacity);
+        if (preset !== 'custom') {
+            setVenueLengthFt(venue.lengthFt);
+            setVenueWidthFt(venue.widthFt);
+            setGuestCount(venue.capacity);
+        }
     };
 
     /**
@@ -103,7 +119,7 @@ const EventPlanner = () => {
         const canvas = new fabric.Canvas(canvasRef.current, {
             width: canvasWidth,
             height: canvasHeight,
-            backgroundColor: '#f8f9fa',
+            backgroundColor: '#ffffff',
             selection: true
         });
 
@@ -142,11 +158,12 @@ const EventPlanner = () => {
     }, [selectedObject]);
 
     const addGrid = (canvas) => {
-        // Grid should be consistent with venue feet (e.g., every 5 feet)
         const gridSize = 5 * renderScale;
+        const gridColor = 'rgba(0,0,0,0.05)';
+
         for (let i = 0; i < canvasWidth / gridSize; i++) {
             canvas.add(new fabric.Line([i * gridSize, 0, i * gridSize, canvasHeight], {
-                stroke: '#e0e0e0',
+                stroke: gridColor,
                 selectable: false,
                 evented: false,
                 id: 'grid'
@@ -154,7 +171,7 @@ const EventPlanner = () => {
         }
         for (let i = 0; i < canvasHeight / gridSize; i++) {
             canvas.add(new fabric.Line([0, i * gridSize, canvasWidth, i * gridSize], {
-                stroke: '#e0e0e0',
+                stroke: gridColor,
                 selectable: false,
                 evented: false,
                 id: 'grid'
@@ -163,20 +180,22 @@ const EventPlanner = () => {
     };
 
     const addDefaultElements = (canvas) => {
-        // Entry point
+        // Styled Entry Point
         const entryCircle = new fabric.Circle({
-            radius: 20,
-            fill: '#4CAF50',
-            stroke: '#2E7D32',
-            strokeWidth: 3,
+            radius: 18,
+            fill: '#10b981',
+            stroke: '#059669',
+            strokeWidth: 2,
+            shadow: new fabric.Shadow({ color: 'rgba(16,185,129,0.3)', blur: 10 }),
             originX: 'center',
             originY: 'center'
         });
 
-        const entryLabel = new fabric.Text('Entry', {
-            fontSize: 12,
+        const entryLabel = new fabric.Text('IN', {
+            fontSize: 11,
             fill: '#FFFFFF',
             fontWeight: 'bold',
+            fontFamily: 'Inter',
             originX: 'center',
             originY: 'center'
         });
@@ -191,20 +210,22 @@ const EventPlanner = () => {
         });
         (entryGroup as any).id = 'entry';
 
-        // Exit point
+        // Styled Exit Point
         const exitCircle = new fabric.Circle({
-            radius: 20,
-            fill: '#f44336',
-            stroke: '#c62828',
-            strokeWidth: 3,
+            radius: 18,
+            fill: '#ef4444',
+            stroke: '#b91c1c',
+            strokeWidth: 2,
+            shadow: new fabric.Shadow({ color: 'rgba(239,68,68,0.3)', blur: 10 }),
             originX: 'center',
             originY: 'center'
         });
 
-        const exitLabel = new fabric.Text('Exit', {
-            fontSize: 12,
+        const exitLabel = new fabric.Text('OUT', {
+            fontSize: 11,
             fill: '#FFFFFF',
             fontWeight: 'bold',
+            fontFamily: 'Inter',
             originX: 'center',
             originY: 'center'
         });
@@ -219,49 +240,44 @@ const EventPlanner = () => {
         });
         (exitGroup as any).id = 'exit';
 
-        // Sample tables
-        addTable(canvas, Math.min(150, canvasWidth / 3), Math.min(100, canvasHeight / 4), 'round', 8);
-        addTable(canvas, Math.min(300, canvasWidth / 2), Math.min(100, canvasHeight / 4), 'round', 8);
-        addTable(canvas, Math.min(150, canvasWidth / 3), Math.min(250, canvasHeight * 0.6), 'rectangular', 6);
-
-        // Buffet station (20ft)
-        addBuffet(canvas, canvasWidth / 2 - 100, canvasHeight - 80, 20);
-
         canvas.add(entryGroup, exitGroup);
     };
 
     const addTable = (canvas, x, y, type, seats) => {
         let tableShape;
-        const baseColor = '#FFF3E0';
-        const strokeColor = '#FF9800';
+        const baseColor = '#ffffff';
+        const strokeColor = '#d4af37'; // Champagne Gold
 
         if (type === 'round') {
             tableShape = new fabric.Circle({
-                radius: 40,
+                radius: 35,
                 fill: baseColor,
                 stroke: strokeColor,
                 strokeWidth: 2,
                 originX: 'center',
-                originY: 'center'
+                originY: 'center',
+                shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.05)', blur: 5, offsetY: 2 })
             });
         } else {
             tableShape = new fabric.Rect({
-                width: 120,
-                height: 60,
+                width: 100,
+                height: 50,
                 fill: baseColor,
                 stroke: strokeColor,
                 strokeWidth: 2,
-                rx: 5,
-                ry: 5,
+                rx: 4,
+                ry: 4,
                 originX: 'center',
-                originY: 'center'
+                originY: 'center',
+                shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.05)', blur: 5, offsetY: 2 })
             });
         }
 
-        const seatLabel = new fabric.Text(`${seats} seats`, {
-            fontSize: 11,
-            fill: '#E65100',
-            fontWeight: 'bold',
+        const seatLabel = new fabric.Text(`${seats}`, {
+            fontSize: 12,
+            fill: '#b59020',
+            fontWeight: '600',
+            fontFamily: 'Inter',
             originX: 'center',
             originY: 'center'
         });
@@ -278,28 +294,31 @@ const EventPlanner = () => {
         (tableGroup as any).capacity = seats;
 
         canvas.add(tableGroup);
+        canvas.setActiveObject(tableGroup);
         updateObjectCount(canvas);
     };
 
     const addBuffet = (canvas, x, y, lengthFt) => {
-        const widthPx = lengthFt * renderScale; // Use specific render scale
+        const widthPx = lengthFt * renderScale;
 
         const buffetRect = new fabric.Rect({
             width: widthPx,
-            height: 40,
-            fill: '#fff7ed',
-            stroke: '#fdba74',
+            height: 35,
+            fill: '#fffbf7', // Warm ivory
+            stroke: '#d4af37',
             strokeWidth: 2,
-            rx: 5,
-            ry: 5,
+            rx: 4,
+            ry: 4,
             originX: 'center',
-            originY: 'center'
+            originY: 'center',
+            shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.05)', blur: 5, offsetY: 2 })
         });
 
-        const buffetLabel = new fabric.Text(`Buffet ${lengthFt}ft`, {
-            fontSize: 12,
-            fill: '#9a3412',
+        const buffetLabel = new fabric.Text('BUFFET', {
+            fontSize: 10,
+            fill: '#b59020',
             fontWeight: '600',
+            fontFamily: 'Inter',
             originX: 'center',
             originY: 'center'
         });
@@ -316,6 +335,7 @@ const EventPlanner = () => {
         (buffetGroup as any).lengthFt = lengthFt;
 
         canvas.add(buffetGroup);
+        canvas.setActiveObject(buffetGroup);
         updateObjectCount(canvas);
     };
 
@@ -370,6 +390,7 @@ const EventPlanner = () => {
         setResults(null);
         setShowHeatmap(false);
         clearHeatmap();
+        setShowResults(true); // Open panel immediately to show loading if we had it
 
         try {
             const layout = extractLayout();
@@ -419,10 +440,6 @@ const EventPlanner = () => {
         }
     };
 
-
-    /**
-     * Export Professional Report from backend
-     */
     const exportProfessionalReport = async () => {
         try {
             const layout = extractLayout();
@@ -458,10 +475,9 @@ const EventPlanner = () => {
             const heatCircle = new fabric.Circle({
                 left: zone.x * renderScale,
                 top: zone.y * renderScale,
-                radius: 3 * renderScale, // Relative radius
-                fill: `rgba(255, 0, 0, ${zone.severity * 0.4})`,
-                stroke: '#ff0000',
-                strokeWidth: 2,
+                radius: 5 * renderScale, // Larger radius for visibility
+                fill: `rgba(239, 68, 68, ${Math.min(zone.severity * 0.3, 0.6)})`, // Red with opacity
+                stroke: 'transparent',
                 selectable: false,
                 evented: false,
                 id: 'heatmap',
@@ -470,7 +486,10 @@ const EventPlanner = () => {
             });
             canvas.add(heatCircle);
         });
-        canvas.renderAll();
+        const gridObj = canvas.getObjects().find(o => o.id === 'grid');
+        if (gridObj) {
+            canvas.moveObjectTo(gridObj, 0);
+        }
     };
 
     const clearHeatmap = () => {
@@ -480,7 +499,6 @@ const EventPlanner = () => {
         objects.forEach(obj => {
             if (obj.id === 'heatmap') canvas.remove(obj);
         });
-        canvas.renderAll();
         setShowHeatmap(false);
     };
 
@@ -493,7 +511,7 @@ const EventPlanner = () => {
     };
 
     const clearLayout = () => {
-        if (confirm('Clear all tables and buffets? Entry/exit points will remain.')) {
+        if (confirm('Clear all tables and buffets?')) {
             const canvas = fabricCanvasRef.current;
             const objects = canvas.getObjects();
             objects.forEach(obj => {
@@ -505,262 +523,205 @@ const EventPlanner = () => {
             updateObjectCount(canvas);
             clearHeatmap();
             setResults(null);
+            setShowResults(false);
         }
-    };
-
-    const exportPDF = async () => {
-        const { jsPDF } = await import('jspdf');
-        const html2canvas = (await import('html2canvas')).default;
-
-        const canvas = canvasRef.current;
-        const canvasImage = await html2canvas(canvas);
-        const pdf = new jsPDF('landscape');
-
-        pdf.setFontSize(20);
-        pdf.text('Event Layout Analysis - OccasionOS', 15, 20);
-
-        const imgData = canvasImage.toDataURL('image/png');
-        pdf.addImage(imgData, 'PNG', 15, 30, 180, 120);
-
-        if (results) {
-            pdf.setFontSize(14);
-            pdf.text('Recommendations', 15, 160);
-            pdf.setFontSize(11);
-            pdf.text(`Venue: ${venueSqFt} sq ft | Guests: ${guestCount} | Duration: ${duration} hours`, 15, 170);
-            pdf.text(`Staff: ${results.recommendations.staff.count} servers`, 15, 180);
-            pdf.text(`Buffet: ${results.recommendations.buffet.recommendedLength}ft`, 15, 190);
-            pdf.text(`Plates: ${results.recommendations.plates.total}`, 15, 200);
-        }
-
-        pdf.save('event-layout-analysis.pdf');
     };
 
     return (
         <div className="planner-container">
-            <div className="planner-header">
-                <h1>Event Flow Planner</h1>
-                <p>Design your layout and get professional recommendations</p>
-            </div>
+            {/* Header */}
+            <header className="planner-header">
+                <h1>Event Flow Planner <span className="beta-tag" style={{ fontSize: '0.7em', color: '#d4af37', background: 'rgba(212,175,55,0.1)', padding: '2px 6px', borderRadius: '4px' }}>BETA</span></h1>
+                <div className="header-actions">
+                    <button className="btn-secondary" onClick={() => setShowHowItWorks(true)}>
+                        <HelpCircle size={18} /> Help
+                    </button>
+                    <button className="btn-primary" style={{ padding: '0.5rem 1rem' }} onClick={() => confirm('Exit planner?') ? window.history.back() : null}>
+                        Done
+                    </button>
+                </div>
+            </header>
 
             <div className="planner-workspace">
-                {/* Control Panel */}
-                <div className="control-panel">
-                    <h3>Event Configuration</h3>
+                {/* Left Sidebar - Configuration */}
+                <aside className="config-sidebar">
 
-                    <div className="control-group">
-                        <label>Venue Type</label>
-                        <select value={venuePreset} onChange={(e) => handleVenuePresetChange(e.target.value)}>
-                            {Object.entries(VENUE_PRESETS).map(([key, venue]) => (
-                                <option key={key} value={key}>{venue.name}</option>
-                            ))}
-                        </select>
-                        <small className="help-text">{venueSqFt.toLocaleString()} sq ft ({venueLengthFt}ft × {venueWidthFt}ft)</small>
+                    <div className="config-section">
+                        <h3>Venue Details</h3>
+                        <div className="input-group">
+                            <div className="input-card">
+                                <label><Layout size={14} style={{ display: 'inline', marginRight: 4 }} /> Venue Type</label>
+                                <select value={venuePreset} onChange={(e) => handleVenuePresetChange(e.target.value)}>
+                                    {Object.entries(VENUE_PRESETS).map(([key, venue]) => (
+                                        <option key={key} value={key}>{venue.name} ({venue.sqft.toLocaleString()} sq ft)</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {venuePreset === 'custom' && (
+                            <div className="input-row">
+                                <div className="input-card">
+                                    <label>Length (ft)</label>
+                                    <input type="number" value={venueLengthFt} onChange={(e) => setVenueLengthFt(Number(e.target.value))} />
+                                </div>
+                                <div className="input-card">
+                                    <label>Width (ft)</label>
+                                    <input type="number" value={venueWidthFt} onChange={(e) => setVenueWidthFt(Number(e.target.value))} />
+                                </div>
+                            </div>
+                        )}
+
+                        <div style={{ fontSize: '0.8rem', color: '#6b6b6b', marginTop: '0.5rem' }}>
+                            <Maximize size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                            <span style={{ verticalAlign: 'middle', marginLeft: '4px' }}>
+                                {venueSqFt.toLocaleString()} sq ft total area
+                            </span>
+                        </div>
                     </div>
 
-                    {venuePreset === 'custom' && (
-                        <>
-                            <div className="control-group">
-                                <label>Length (feet)</label>
+                    <div className="config-section">
+                        <h3>Event Parameters</h3>
+                        <div className="input-group">
+                            <div className="input-card">
+                                <label><Users size={14} style={{ display: 'inline', marginRight: 4 }} /> Guest Count</label>
                                 <input
                                     type="number"
-                                    value={venueLengthFt}
-                                    onChange={(e) => setVenueLengthFt(Math.max(20, Math.min(120, parseInt(e.target.value) || 50)))}
-                                    min="20"
-                                    max="120"
+                                    value={guestCount}
+                                    onChange={(e) => setGuestCount(Math.max(10, Math.min(1000, Number(e.target.value))))}
                                 />
                             </div>
-                            <div className="control-group">
-                                <label>Width (feet)</label>
+                        </div>
+                        <div className="input-group">
+                            <div className="input-card">
+                                <label><Clock size={14} style={{ display: 'inline', marginRight: 4 }} /> Duration (Hrs)</label>
                                 <input
                                     type="number"
-                                    value={venueWidthFt}
-                                    onChange={(e) => setVenueWidthFt(Math.max(20, Math.min(100, parseInt(e.target.value) || 40)))}
-                                    min="20"
-                                    max="100"
+                                    value={duration}
+                                    onChange={(e) => setDuration(Math.max(1, Number(e.target.value)))}
                                 />
                             </div>
-                        </>
-                    )}
-
-                    <div className="control-group">
-                        <label>Guest Count</label>
-                        <input
-                            type="number"
-                            value={guestCount}
-                            onChange={(e) => setGuestCount(Math.max(10, Math.min(500, parseInt(e.target.value) || 100)))}
-                            min="10"
-                            max="500"
-                        />
-                        <small className="help-text">10 - 500 guests</small>
+                        </div>
                     </div>
 
-                    <div className="control-group">
-                        <label>Event Duration</label>
-                        <input
-                            type="number"
-                            value={duration}
-                            onChange={(e) => setDuration(Math.max(1, Math.min(8, parseInt(e.target.value) || 3)))}
-                            min="1"
-                            max="8"
-                        />
-                        <small className="help-text">1 - 8 hours</small>
+                    <div className="config-section">
+                        <h3>Layout Objects</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#2c2c2c' }}>
+                            <span>Tables: <strong>{objectCount.tables}</strong></span>
+                            <span>Buffets: <strong>{objectCount.buffets}</strong></span>
+                        </div>
                     </div>
 
-                    <div className="object-count">
-                        <div>Tables: {objectCount.tables}</div>
-                        <div>Buffets: {objectCount.buffets}</div>
-                    </div>
+                    <div className="primary-actions">
+                        <button
+                            className="btn-primary"
+                            onClick={analyzeEventFlow}
+                            disabled={isAnalyzing}
+                        >
+                            {isAnalyzing ? <RotateCw className="spin" size={18} /> : <Play size={18} fill="currentColor" />}
+                            {isAnalyzing ? 'Analyzing...' : 'Analyze Flow'}
+                        </button>
 
-                    <div className="control-actions">
-                        <button className="btn-add" onClick={() => addTable(fabricCanvasRef.current, 200, 150, 'round', 8)}>
-                            + Round Table (8 seats)
-                        </button>
-                        <button className="btn-add" onClick={() => addTable(fabricCanvasRef.current, 200, 150, 'rectangular', 6)}>
-                            + Rectangular Table (6 seats)
-                        </button>
-                        <button className="btn-add" onClick={() => addBuffet(fabricCanvasRef.current, 200, 150, 20)}>
-                            + Buffet Station (20ft)
+                        <button className="btn-secondary" onClick={clearLayout}>
+                            <RotateCw size={18} /> Clear Layout
                         </button>
                     </div>
+                </aside>
 
-                    {selectedObject && selectedObject.id !== 'entry' && selectedObject.id !== 'exit' && (
-                        <button className="btn-delete" onClick={deleteSelectedObject}>
-                            Delete Selected
+                {/* Right Area - Canvas & Tools */}
+                <main className="planner-canvas-area" ref={containerRef}>
+
+                    {/* Floating Toolbar */}
+                    <div className="floating-toolbar">
+                        <button className="tool-btn" onClick={() => addTable(fabricCanvasRef.current, canvasWidth / 2, canvasHeight / 2, 'round', 8)}>
+                            <Armchair size={18} /> Round (8)
                         </button>
-                    )}
-
-                    <button className="btn-clear-canvas" onClick={clearLayout}>
-                        Clear Layout
-                    </button>
-
-                    <button className="btn-simulate" onClick={analyzeEventFlow} disabled={isAnalyzing}>
-                        {isAnalyzing ? 'Analyzing...' : 'Analyze Event Flow'}
-                    </button>
-
-                    {showHeatmap && (
-                        <button className="btn-clear" onClick={clearHeatmap}>
-                            Clear Heatmap
+                        <button className="tool-btn" onClick={() => addTable(fabricCanvasRef.current, canvasWidth / 2, canvasHeight / 2, 'rect', 6)}>
+                            <Square size={18} /> Rect (6)
                         </button>
-                    )}
-                </div>
-
-                {/* Canvas */}
-                <div className="canvas-area">
-                    <canvas ref={canvasRef} />
-                    <div className="canvas-help">
-                        <p>Drag to reposition | Select & Delete/Backspace to remove</p>
-                    </div>
-                </div>
-
-                {/* Results */}
-                {results && (
-                    <div className="results-panel">
-                        <h3>Analysis Results</h3>
-
-                        <div className="recommendation-card">
-                            <div className="rec-header">
-                                <span className="rec-icon">👥</span>
-                                <h4>Staff Needed</h4>
-                            </div>
-                            <div className="rec-value">{results.recommendations.staff.count} servers</div>
-                            <p className="rec-reason">{results.recommendations.staff.reason}</p>
-                            <span className="confidence-badge">{results.recommendations.staff.confidence}</span>
-                        </div>
-
-                        <div className="recommendation-card">
-                            <div className="rec-header">
-                                <span className="rec-icon">🍽️</span>
-                                <h4>Buffet Length</h4>
-                            </div>
-                            <div className="rec-value">{results.recommendations.buffet.recommendedLength} feet</div>
-                            <p className="rec-reason">{results.recommendations.buffet.reason}</p>
-                            <span className="confidence-badge">{results.recommendations.buffet.confidence}</span>
-                        </div>
-
-                        <div className="recommendation-card">
-                            <div className="rec-header">
-                                <h4>Plates Needed</h4>
-                            </div>
-                            <div className="rec-value">{results.recommendations.plates.total} plates</div>
-                            <p className="rec-reason">{results.recommendations.plates.reason}</p>
-                            <span className="confidence-badge">{results.recommendations.plates.confidence}</span>
-                        </div>
-
-                        <div className="metrics-summary">
-                            <h4>Flow Metrics</h4>
-                            <div className="metrics-grid">
-                                <div className="metric">
-                                    <span className="metric-label">Avg Wait</span>
-                                    <span className="metric-value">{results.metrics.avgWaitTime} min</span>
-                                </div>
-                                <div className="metric">
-                                    <span className="metric-label">Peak Load</span>
-                                    <span className="metric-value">{results.metrics.peakDiners} guests</span>
-                                </div>
-                                <div className="metric">
-                                    <span className="metric-label">Congestion</span>
-                                    <span className="metric-value">{results.metrics.congestionZones} zones</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Narrative Insights Section */}
-                        <div className="ai-insights-panel">
-                            <div className="ai-header">
-                                <h4>Narrative Insights</h4>
-                            </div>
-                            <div className="ai-content">
-                                <p>Based on the simulation, your layout appears well-optimized for the guest count. Check the metrics below for specific details on staffing and resources.</p>
-                            </div>
-                        </div>
-
-                        <div className="action-buttons">
-                            <button className="btn-export-professional" onClick={exportProfessionalReport}>
-                                Professional Report
+                        <button className="tool-btn" onClick={() => addBuffet(fabricCanvasRef.current, canvasWidth / 2, canvasHeight / 2 + 100, 20)}>
+                            <Utensils size={18} /> Buffet (20ft)
+                        </button>
+                        {selectedObject && (
+                            <button className="tool-btn tool-delete" onClick={deleteSelectedObject} style={{ color: '#ef4444' }}>
+                                <Trash2 size={18} />
                             </button>
-                            <button className="btn-export" onClick={exportPDF}>
-                                Export Schematic
-                            </button>
-                        </div>
-
-                        <button className="btn-how-it-works" onClick={() => setShowHowItWorks(!showHowItWorks)}>
-                            How This Works
-                        </button>
+                        )}
                     </div>
-                )}
+
+                    {/* Canvas Container */}
+                    <div className="canvas-container">
+                        <canvas ref={canvasRef} />
+                    </div>
+
+                    {/* Results Overlay Panel */}
+                    {showResults && results && (
+                        <div className="results-overlay">
+                            <div className="results-header">
+                                <h3>Analysis Results</h3>
+                                <button className="close-btn" onClick={() => setShowResults(false)}>
+                                    <X size={18} />
+                                </button>
+                            </div>
+                            <div className="results-content">
+                                <div className="metric-row">
+                                    <span className="metric-label">Staff Required</span>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div className="metric-value">{results.recommendations.staff.count} Servers</div>
+                                        <div className="status-badge status-good">{results.recommendations.staff.confidence} conf.</div>
+                                    </div>
+                                </div>
+                                <div className="metric-row">
+                                    <span className="metric-label">Buffet Size</span>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div className="metric-value">{results.recommendations.buffet.recommendedLength} ft</div>
+                                        <div className="status-badge status-good">Optimal</div>
+                                    </div>
+                                </div>
+                                <div className="metric-row">
+                                    <span className="metric-label">Est. Wait Time</span>
+                                    <div className="metric-value">{results.metrics.avgWaitTime} min</div>
+                                </div>
+
+                                <div style={{ marginTop: '1rem' }}>
+                                    <button className="btn-primary" style={{ width: '100%' }} onClick={exportProfessionalReport}>
+                                        <Download size={16} /> Export PDF Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </main>
             </div>
 
             {/* How It Works Modal */}
             {showHowItWorks && (
-                <div className="modal-overlay" onClick={() => setShowHowItWorks(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h2>How Event Flow Analysis Works</h2>
-
-                        <h3>What We Analyze</h3>
-                        <p><strong>Guest Movement:</strong> We simulate how guests move through your venue from entry → tables → buffet → exit to identify potential bottlenecks.</p>
-
-                        <p><strong>Service Capacity:</strong> Based on your buffet length and layout, we calculate how many guests can be served simultaneously.</p>
-
-                        <p><strong>Peak Load:</strong> We identify when the most guests will be at the buffet at once, typically 40-60% of total attendance.</p>
-
-                        <h3>Our Recommendations</h3>
-                        <p><strong>Staff Count:</strong> Based on industry standard ratios (1 server per 40-50 guests for buffet service) adjusted for your specific layout efficiency.</p>
-
-                        <p><strong>Buffet Length:</strong> Follows catering industry guidelines: minimum 1ft per 10 guests, comfortable at 1.5ft per 10 guests.</p>
-
-                        <p><strong>Plate Count:</strong> Total guest count plus 15-20% buffer for replacements and multiple trips.</p>
-
-                        <h3>Confidence Levels</h3>
-                        <p><strong>High:</strong> Based on established industry standards</p>
-                        <p><strong>Medium:</strong> Adjusted for your specific layout</p>
-
-                        <p className="disclaimer"><em>These are planning recommendations based on typical event patterns. Actual needs may vary based on menu complexity, guest demographics, and service style.</em></p>
-
-                        <button className="btn-close" onClick={() => setShowHowItWorks(false)}>Close</button>
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }} onClick={() => setShowHowItWorks(false)}>
+                    <div style={{
+                        background: 'white', padding: '2rem', borderRadius: '12px',
+                        maxWidth: '500px', width: '90%'
+                    }} onClick={e => e.stopPropagation()}>
+                        <h2 style={{ marginBottom: '1rem', color: '#2c2c2c', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <HelpCircle size={24} color="#d4af37" /> Event Flow Logic
+                        </h2>
+                        <p style={{ color: '#6b6b6b', lineHeight: 1.6 }}>
+                            OccasionOS uses a deterministic simulation to predict guest flow. We analyze:
+                        </p>
+                        <ul style={{ margin: '1rem 0', paddingLeft: '1.2rem', color: '#4b4b4b', lineHeight: 1.8 }}>
+                            <li><strong>Pathfinding:</strong> Distance from entry → tables → buffet.</li>
+                            <li><strong>Service Rate:</strong> 10ft of buffet serves ~40 guests/hour efficiently.</li>
+                            <li><strong>Congestion:</strong> Areas with &lt; 3ft clearance turn red.</li>
+                        </ul>
+                        <button className="btn-primary" style={{ width: '100%' }} onClick={() => setShowHowItWorks(false)}>
+                            Got it
+                        </button>
                     </div>
                 </div>
             )}
-
         </div>
     );
 };

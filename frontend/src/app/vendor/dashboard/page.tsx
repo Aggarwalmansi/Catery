@@ -5,6 +5,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import { VendorAPI } from '@/app/utils/apiClient';
 import { toast } from 'react-hot-toast';
 import { Power, PowerOff, AlertCircle, MapPin } from 'lucide-react';
+import CatererEnquiries from '@/app/components/dashboard/caterer/CatererEnquiries';
 
 export default function VendorDashboard() {
     const { token, user } = useAuth();
@@ -12,6 +13,7 @@ export default function VendorDashboard() {
     const [orders, setOrders] = useState<any[]>([]);
     const [stats, setStats] = useState<any>({ totalOrders: 0, pendingOrders: 0, revenue: 0 });
     const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<'orders' | 'enquiries'>('orders');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,7 +89,7 @@ export default function VendorDashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Content - Active Orders */}
+                {/* Main Content - Active Orders / Enquiries */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Paused Banner */}
                     {vendor.status === 'PAUSED' && (
@@ -97,74 +99,101 @@ export default function VendorDashboard() {
                         </div>
                     )}
 
-                    <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
+                    {/* Tab Navigation */}
+                    <div className="flex space-x-4 border-b border-gray-100">
+                        <button
+                            onClick={() => setActiveTab('orders')}
+                            className={`pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'orders'
+                                ? 'border-orange-500 text-orange-600'
+                                : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                        >
+                            Orders
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('enquiries')}
+                            className={`pb-3 px-4 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'enquiries'
+                                ? 'border-orange-500 text-orange-600'
+                                : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                        >
+                            Menu Enquiries
+                        </button>
+                    </div>
 
-                    <div className="space-y-4">
-                        {orders.map((order) => (
-                            <div key={order.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-semibold text-lg">{order.user?.name || 'Guest'}</span>
-                                            <span className={`text-xs px-2 py-1 rounded-full ${order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                                                order.status === 'APPROVED' ? 'bg-blue-100 text-blue-800' :
-                                                    order.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
-                                                        order.status === 'REJECTED_BY_VENDOR' ? 'bg-red-100 text-red-800' :
-                                                            'bg-gray-100 text-gray-800'
-                                                }`}>
-                                                {order.status.replace(/_/g, ' ')}
-                                            </span>
+                    {activeTab === 'enquiries' ? (
+                        <CatererEnquiries />
+                    ) : (
+                        <>
+                            <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
+                            <div className="space-y-4">
+                                {orders.map((order) => (
+                                    <div key={order.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-semibold text-lg">{order.user?.name || 'Guest'}</span>
+                                                    <span className={`text-xs px-2 py-1 rounded-full ${order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                                        order.status === 'APPROVED' ? 'bg-blue-100 text-blue-800' :
+                                                            order.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
+                                                                order.status === 'REJECTED_BY_VENDOR' ? 'bg-red-100 text-red-800' :
+                                                                    'bg-gray-100 text-gray-800'
+                                                        }`}>
+                                                        {order.status.replace(/_/g, ' ')}
+                                                    </span>
+                                                </div>
+                                                <p className="text-gray-500 text-sm mt-1">{order.occasion} • {order.guestCount} Guests</p>
+                                                <p className="text-gray-500 text-sm">{new Date(order.date).toLocaleDateString()}</p>
+                                                {order.address && (
+                                                    <p className="text-gray-600 text-sm mt-2 flex items-center gap-1">
+                                                        <MapPin className="w-3 h-3" />
+                                                        {order.address}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="font-bold text-lg">₹{order.totalAmount}</p>
+                                            </div>
                                         </div>
-                                        <p className="text-gray-500 text-sm mt-1">{order.occasion} • {order.guestCount} Guests</p>
-                                        <p className="text-gray-500 text-sm">{new Date(order.date).toLocaleDateString()}</p>
-                                        {order.address && (
-                                            <p className="text-gray-600 text-sm mt-2 flex items-center gap-1">
-                                                <MapPin className="w-3 h-3" />
-                                                {order.address}
-                                            </p>
+
+                                        {/* Actions */}
+                                        {order.status === 'PENDING' && (
+                                            <div className="flex gap-3 justify-end pt-4 border-t border-gray-50">
+                                                <button
+                                                    onClick={() => handleStatusUpdate(order.id, 'REJECTED')}
+                                                    className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                >
+                                                    Reject
+                                                </button>
+                                                <button
+                                                    onClick={() => handleStatusUpdate(order.id, 'APPROVED')}
+                                                    className="px-4 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                                                >
+                                                    Accept Order
+                                                </button>
+                                            </div>
+                                        )}
+                                        {order.status === 'CONFIRMED' && (
+                                            <div className="flex gap-3 justify-end pt-4 border-t border-gray-50">
+                                                <button
+                                                    onClick={() => handleStatusUpdate(order.id, 'COMPLETED')}
+                                                    className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                                >
+                                                    Mark Completed
+                                                </button>
+                                            </div>
                                         )}
                                     </div>
-                                    <div className="text-right">
-                                        <p className="font-bold text-lg">₹{order.totalAmount}</p>
-                                    </div>
-                                </div>
+                                ))}
 
-                                {/* Actions */}
-                                {order.status === 'PENDING' && (
-                                    <div className="flex gap-3 justify-end pt-4 border-t border-gray-50">
-                                        <button
-                                            onClick={() => handleStatusUpdate(order.id, 'REJECTED')}
-                                            className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                        >
-                                            Reject
-                                        </button>
-                                        <button
-                                            onClick={() => handleStatusUpdate(order.id, 'APPROVED')}
-                                            className="px-4 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                                        >
-                                            Accept Order
-                                        </button>
-                                    </div>
-                                )}
-                                {order.status === 'CONFIRMED' && (
-                                    <div className="flex gap-3 justify-end pt-4 border-t border-gray-50">
-                                        <button
-                                            onClick={() => handleStatusUpdate(order.id, 'COMPLETED')}
-                                            className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                                        >
-                                            Mark Completed
-                                        </button>
+                                {orders.length === 0 && (
+                                    <div className="text-center py-12 bg-white rounded-xl border border-gray-100 border-dashed">
+                                        <p className="text-gray-500">No orders yet.</p>
                                     </div>
                                 )}
                             </div>
-                        ))}
-
-                        {orders.length === 0 && (
-                            <div className="text-center py-12 bg-white rounded-xl border border-gray-100 border-dashed">
-                                <p className="text-gray-500">No orders yet.</p>
-                            </div>
-                        )}
-                    </div>
+                        </>
+                    )}
                 </div>
 
                 {/* Sidebar - Menu & Quick Actions */}
